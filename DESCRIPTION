@@ -13,3 +13,4 @@ NeedsCompilation: no
 Packaged: 2016-10-15 08:35:27 UTC; brj
 Author: Bob Jansen [aut, cre]
 Maintainer: Bob Jansen <bobjansen@gmail.com>
+Suggests: testthat
