@@ -41,10 +41,16 @@ buildApp <- function() {
 #' runTestServer()
 #' }
 runTestServer <- function() {
-  host <- "0.0.0.0"
-  port <- sample(1025:(2^16 - 1), 1)
+  config <- mattR::config()
 
-  app <- buildApp()
+  host <- "0.0.0.0"
+  if (!"port" %in% names(config)) {
+    port <- sample(1025:(2^16 - 1), 1)
+  } else {
+    port <- as.numeric(config[["port"]])
+  }
+
+  app <- mattR::buildApp()
 
   print(paste("Starting app on:", paste0(host, ":", port)))
   httpuv::runServer(host, port, app)

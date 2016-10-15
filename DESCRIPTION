@@ -3,11 +3,13 @@ Title: mattR is a simple web framework for R
 Version: 0.0.0.9000
 Authors@R: person("Bob", "Jansen", email = "bobjansen@gmail.com", role = c("aut", "cre"))
 Description: A web framework for R.
-Depends:
-    R (>= 3.2.3)
+Depends: R (>= 3.2.3)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports:
-    httpuv
+Imports: httpuv
 RoxygenNote: 5.0.1
+NeedsCompilation: no
+Packaged: 2016-10-15 08:35:27 UTC; brj
+Author: Bob Jansen [aut, cre]
+Maintainer: Bob Jansen <bobjansen@gmail.com>
