@@ -7,9 +7,14 @@
 #' \dontrun{
 #' buildApp()
 #' }
-buildApp <- function() {
+buildApp <- function(config) {
+
   app <- list(
     call = function(req) {
+      debug <- getConfigOrDefault(config, "debug", FALSE)
+      if (debug) {
+        print(paste(req$REQUEST_METHOD, "request on URL:", req$PATH_INFO))
+      }
       list(
         status = 200L,
         headers = list(
@@ -41,16 +46,13 @@ buildApp <- function() {
 #' runTestServer()
 #' }
 runTestServer <- function() {
-  config <- mattR::config()
+  config <- mattR::configure()
 
   host <- "0.0.0.0"
-  if (!"port" %in% names(config)) {
-    port <- sample(1025:(2^16 - 1), 1)
-  } else {
-    port <- as.numeric(config[["port"]])
-  }
+  port <- as.numeric(getConfigOrDefault(config, "port",
+                                        sample(1025:(2^16 - 1), 1)))
 
-  app <- mattR::buildApp()
+  app <- buildApp(config)
 
   print(paste("Starting app on:", paste0(host, ":", port)))
   httpuv::runServer(host, port, app)

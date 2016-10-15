@@ -4,7 +4,7 @@
 \alias{buildApp}
 \title{Build a mattR app object for serving by httpuv}
 \usage{
-buildApp()
+buildApp(config)
 }
 \value{
 The app object
