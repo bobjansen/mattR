@@ -20,6 +20,6 @@ The key if found or the default
 Get a value from the config or return the default
 }
 \examples{
-getConfigOrDefault(configure, port, 8888)
+getConfigOrDefault(configure(), "port", 8888)
 }
 

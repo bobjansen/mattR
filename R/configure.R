@@ -24,7 +24,7 @@ configure <- function() {
 #' @export
 #'
 #' @examples
-#' getConfigOrDefault(configure, port, 8888)
+#' getConfigOrDefault(configure(), "port", 8888)
 getConfigOrDefault <- function(config, key, default) {
   if (key %in% names(config)) {
     config[[key]]
