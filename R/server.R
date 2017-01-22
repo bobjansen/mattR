@@ -1,5 +1,6 @@
 #' Build a mattR app object for serving by httpuv
 #'
+#' @param config List containing the configuration for this server
 #' @return The app object
 #' @export
 #'
@@ -10,21 +11,13 @@
 buildApp <- function(config) {
 
   app <- list(
-    call = function(req) {
+    call = function(request) {
       debug <- getConfigOrDefault(config, "debug", FALSE)
       if (debug) {
-        print(paste(req$REQUEST_METHOD, "request on URL:", req$PATH_INFO))
+        print(paste(request$REQUEST_METHOD, "request on URL:",
+                    request$PATH_INFO))
       }
-      list(
-        status = 200L,
-        headers = list(
-          'Content-Type' = 'text/html'
-        ),
-        body = paste(
-          sep = "\r\n",
-          "foo"
-        )
-      )
+      handleRequest(request, debug)
     },
     onWSOpen = function(ws) {
       ws$onMessage(function(binary, message) {
@@ -34,6 +27,33 @@ buildApp <- function(config) {
   )
 
   app
+}
+
+handleRequest <- function(request, debug = FALSE) {
+  content <- if(request$PATH_INFO == "/") {
+    "HOME"
+  } else if (startsWith(request$PATH_INFO, "/static/")) {
+    fileName <- system.file(request$PATH_INFO, package = "mattR")
+    if (file.exists(fileName)) {
+      readChar(fileName, file.info(fileName)$size)
+    } else {
+      "404"
+    }
+  } else {
+    "NOT HOME"
+  }
+
+  list(
+    status = 200L,
+    headers = list(
+      # Invalid, but the browser is pretty smart.
+      'Content-Type' = ''
+    ),
+    body = paste(
+      sep = "\r\n",
+      content, ifelse(debug, request$PATH_INFO, "")
+    )
+  )
 }
 
 #' Run a server for testing mattR apps
@@ -56,4 +76,46 @@ runTestServer <- function() {
 
   print(paste("Starting app on:", paste0(host, ":", port)))
   httpuv::runServer(host, port, app)
+}
+
+
+#' Kill a process by the given token.
+#'
+#' @param token Token of the process to kill.
+#'
+#' @return TRUE on success, FALSE on failure.
+#' @export
+#'
+killByToken <- function(token) {
+  procs <- system2("ps", args = "aux", stdout = TRUE)
+
+  lines <- grep(paste("mattR --args", token), procs)
+  if (length(lines) > 1) {
+    stop("Multiple processes found with supposedly unique token")
+  } else if (length(lines) == 0) {
+    warning(paste("No process found for token:", token))
+    FALSE
+  } else {
+    system2("kill", args = strsplit(procs[[lines[1]]], "\\s+")[[1]][[2]])
+    TRUE
+  }
+}
+
+#' Start a server as an external process, killable by killByToken(output)
+#'
+#' @return The probably unique token of the process.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' startServerProcess()
+#' }
+startServerProcess <- function() {
+  scriptName <- system.file("scripts", "mattR", package = "mattR")
+
+  token <- as.character(sample(1:1e6, 1))
+
+  system2(scriptName, wait = FALSE, args = token, stdout = "/opt/code/mattR/stdout.log", stderr = "/opt/code/mattR/stderr.log")
+
+  token
 }

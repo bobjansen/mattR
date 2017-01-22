@@ -6,6 +6,9 @@
 \usage{
 buildApp(config)
 }
+\arguments{
+\item{config}{List containing the configuration for this server}
+}
 \value{
 The app object
 }
