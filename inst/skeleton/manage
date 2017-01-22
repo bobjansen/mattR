@@ -1,0 +1,14 @@
+#!/usr/bin/env Rscript
+
+library(mattR)
+
+args <- commandArgs(TRUE)
+
+if (length(args) == 0) {
+    usageMessage()
+} else {
+    switch(args[[1]],
+        help = helpMessage(args),
+        usageMessage())
+}
+

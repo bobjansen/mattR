@@ -3,4 +3,7 @@
 export(buildApp)
 export(configure)
 export(getConfigOrDefault)
+export(helpMessage)
 export(runTestServer)
+export(skeleton)
+export(usageMessage)
