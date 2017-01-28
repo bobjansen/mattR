@@ -23,7 +23,7 @@ matchRequest <- function(request, pattern) {
 createRoute <- function(path, handler) {
   function(request) {
     if (matchRequest(request, path)) {
-      response <- handler(request, path)
+      response <- handler(request)
       if (is.null(response)) {
         stop("Handler for", path, "returned NULL, should be response object.")
       } else {
@@ -42,6 +42,6 @@ matchRoutes <- function(routes, request) {
       return(response)
     }
   }
-  NULL
+  notFoundResponse()
 }
 

@@ -10,6 +10,11 @@
 #' }
 buildApp <- function(config) {
 
+  routes <- mattR::createRoutes(
+    c("/index.html", mattR::staticView("/opt/code/mattR/inst/static/", "/")),
+    c("/static/*", mattR::staticView("/opt/code/mattR/inst/static/", "/static"))
+  )
+
   app <- list(
     call = function(request) {
       debug <- getConfigOrDefault(config, "debug", FALSE)
@@ -17,7 +22,7 @@ buildApp <- function(config) {
         print(paste(request$REQUEST_METHOD, "request on URL:",
                     request$PATH_INFO))
       }
-      handleRequest(request, debug)
+      matchRoutes(routes, request)
     },
     onWSOpen = function(ws) {
       ws$onMessage(function(binary, message) {
@@ -69,8 +74,8 @@ runTestServer <- function() {
   config <- mattR::configure()
 
   host <- "0.0.0.0"
-  port <- as.numeric(mattR::etConfigOrDefault(config, "port",
-                                              sample(1025:(2^16 - 1), 1)))
+  port <- as.numeric(mattR::getConfigOrDefault(config, "port",
+                                               sample(1025:(2^16 - 1), 1)))
 
   app <- buildApp(config)
 
