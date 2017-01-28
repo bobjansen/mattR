@@ -22,7 +22,12 @@ buildApp <- function(config) {
         print(paste(request$REQUEST_METHOD, "request on URL:",
                     request$PATH_INFO))
       }
-      matchRoutes(routes, request)
+      response <- matchRoutes(routes, request)
+      if (debug) {
+        print(paste("Response for", request$REQUEST_METHOD, "request on URL:",
+                    request$PATH_INFO, "has status", response$status))
+      }
+      response
     },
     onWSOpen = function(ws) {
       ws$onMessage(function(binary, message) {
