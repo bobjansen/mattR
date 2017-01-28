@@ -30,7 +30,7 @@ skeleton <- function(path = getwd()) {
 #' helpMessage()
 #' }
 helpMessage <- function(...) {
-    cat("Help message\n")
+    cat("Help message\n") # nocov
 }
 
 #' Display the usage message
@@ -41,6 +41,6 @@ helpMessage <- function(...) {
 #' usageMessage()
 #' }
 usageMessage <- function() {
-    cat("Usage message\n")
+    cat("Usage message\n") # nocov
 }
 
