@@ -11,22 +11,25 @@
 buildApp <- function(config) {
 
   routes <- mattR::createRoutes(
-    c("/index.html", mattR::staticView("/opt/code/mattR/inst/static/", "/")),
+    c("^/$", mattR::staticView("/opt/code/mattR/inst/static/", "/")),
     c("/static/*", mattR::staticView("/opt/code/mattR/inst/static/", "/static"))
   )
+  debug <- getConfigOrDefault(config, "debug", FALSE)
 
   app <- list(
     call = function(request) {
-      debug <- getConfigOrDefault(config, "debug", FALSE)
       if (debug) {
         print(paste(request$REQUEST_METHOD, "request on URL:",
                     request$PATH_INFO))
       }
+
       response <- matchRoutes(routes, request)
+
       if (debug) {
         print(paste("Response for", request$REQUEST_METHOD, "request on URL:",
                     request$PATH_INFO, "has status", response$status))
       }
+
       response
     },
     onWSOpen = function(ws) {
@@ -37,33 +40,6 @@ buildApp <- function(config) {
   )
 
   app
-}
-
-handleRequest <- function(request, debug = FALSE) {
-  content <- if (request$PATH_INFO == "/") {
-    "HOME"
-  } else if (startsWith(request$PATH_INFO, "/static/")) {
-    fileName <- system.file(request$PATH_INFO, package = "mattR")
-    if (file.exists(fileName)) {
-      readChar(fileName, file.info(fileName)$size)
-    } else {
-      "404"
-    }
-  } else {
-    "NOT HOME"
-  }
-
-  list(
-    status = 200L,
-    headers = list(
-      # Invalid, but the browser is pretty smart.
-      'Content-Type' = ''
-    ),
-    body = paste(
-      sep = "\r\n",
-      content, ifelse(debug, request$PATH_INFO, "")
-    )
-  )
 }
 
 #' Run a server for testing mattR apps

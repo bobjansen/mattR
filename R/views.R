@@ -21,6 +21,9 @@ staticView <- function(staticDir, urlPath) {
 
     staticResourceSubPath <- substring(requestPath, nchar(urlPath) + 1)
 
+    if (staticResourceSubPath == "") {
+      staticResourceSubPath <- "index.html"
+    }
     fileName <- file.path(staticDir, staticResourceSubPath)
 
     if (file.exists(fileName)) {
@@ -46,7 +49,7 @@ response <- function(body, statusCode) {
 
 notFoundResponse <- function() {
   list(
-    status = 200L,
+    status = 404L,
     headers = list(
       # Invalid, but the browser is pretty smart.
       'Content-Type' = ''
