@@ -47,6 +47,15 @@ test_that("Unmatched routes return NULL", {
     c("contact.html", function(...) 2)
   )
 
-  expect_equal(matchRoutes(routes, list(PATH_INFO = "foo")), NULL)
+  responseObject <- mattR:::matchRoutes(routes, list(PATH_INFO = "foo"))
+
+  expect_equal(responseObject$status, 404L)
 })
 
+test_that("Returning a null object results in error", {
+  routes <- createRoutes(
+    c("index.html", function(...) NULL)
+  )
+
+  expect_error(matchRoutes(routes, list(PATH_INFO = "index.html")))
+})
