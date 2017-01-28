@@ -30,7 +30,7 @@ buildApp <- function(config) {
 }
 
 handleRequest <- function(request, debug = FALSE) {
-  content <- if(request$PATH_INFO == "/") {
+  content <- if (request$PATH_INFO == "/") {
     "HOME"
   } else if (startsWith(request$PATH_INFO, "/static/")) {
     fileName <- system.file(request$PATH_INFO, package = "mattR")
@@ -69,8 +69,8 @@ runTestServer <- function() {
   config <- mattR::configure()
 
   host <- "0.0.0.0"
-  port <- as.numeric(getConfigOrDefault(config, "port",
-                                        sample(1025:(2^16 - 1), 1)))
+  port <- as.numeric(mattR::etConfigOrDefault(config, "port",
+                                              sample(1025:(2^16 - 1), 1)))
 
   app <- buildApp(config)
 

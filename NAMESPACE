@@ -2,6 +2,7 @@
 
 export(buildApp)
 export(configure)
+export(createRoutes)
 export(getConfigOrDefault)
 export(helpMessage)
 export(killByToken)
