@@ -9,6 +9,7 @@ if (length(args) == 0) {
 } else {
     switch(args[[1]],
         help = helpMessage(args),
+        runServer = runTestServer(),
         usageMessage())
 }
 
