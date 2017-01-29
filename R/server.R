@@ -10,10 +10,16 @@
 #' }
 buildApp <- function(config) {
 
-  routes <- mattR::createRoutes(
-    c("^/$", mattR::staticView("/opt/code/mattR/inst/static/", "/")),
-    c("/static/*", mattR::staticView("/opt/code/mattR/inst/static/", "/static"))
-  )
+  routesPath <- file.path(getwd(), "routes.R")
+  if (file.exists(routesPath)) {
+    source(routesPath)
+  } else {
+    source(system.file("defaults", "routes.R", package = "mattR"))
+  }
+  if (!exists("routes")) {
+    stop("The routes.R file should define a variable 'routes'.")
+  }
+
   debug <- getConfigOrDefault(config, "debug", FALSE)
 
   app <- list(
