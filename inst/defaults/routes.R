@@ -1,4 +1,7 @@
+library(mattR)
+
 routes <- mattR::createRoutes(
-  c("^/$", mattR::staticView("/opt/code/mattR/inst/static/", "/")),
-  c("/static/*", mattR::staticView("/opt/code/mattR/inst/static/", "/static"))
+  c("^/$", mattR::templateView(system.file("static", "index.html", package = "mattR"),
+                               list(title = "Title", text = "text"))),
+  c("/static/*", mattR::staticView(system.file("static", package = "mattR"), "/static"))
 )

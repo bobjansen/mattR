@@ -7,7 +7,7 @@ Depends: R (>= 3.2.3)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: httpuv
+Imports: httpuv, whisker
 RoxygenNote: 5.0.1
 NeedsCompilation: no
 Packaged: 2016-10-15 08:35:27 UTC; brj
