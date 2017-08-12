@@ -4,3 +4,5 @@
 .RData
 mattR.Rcheck
 mattR_*.tar.gz
+packrat/lib*/
+packrat/src*/

@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^.*\.log$
 ^.*\.tar.gz$
+^packrat/
+^\.Rprofile$
