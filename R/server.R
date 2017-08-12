@@ -92,8 +92,11 @@ killByToken <- function(token) {
   }
 }
 
+#' startServerProcess
+#'
 #' Start a server as an external process, killable by killByToken(output)
 #'
+#' @param logDir The default logging directory.
 #' @return The probably unique token of the process.
 #' @export
 #'
