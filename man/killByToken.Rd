@@ -15,4 +15,3 @@ TRUE on success, FALSE on failure.
 \description{
 Kill a process by the given token.
 }
-

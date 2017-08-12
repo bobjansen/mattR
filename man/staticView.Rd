@@ -2,7 +2,7 @@
 % Please edit documentation in R/views.R
 \name{staticView}
 \alias{staticView}
-\title{Return static files}
+\title{Respond with a static file}
 \usage{
 staticView(staticDir, urlPath)
 }
@@ -15,11 +15,10 @@ staticView(staticDir, urlPath)
 A response object or NULL if the file is not found.
 }
 \description{
-Return static files
+Respond with a static file
 }
 \examples{
 \dontrun{
 staticFun <- staticView("/var/www/static/", "/static/")
 }
 }
-

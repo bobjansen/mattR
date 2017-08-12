@@ -22,4 +22,3 @@ Render a template given data
 renderTemplate(system.file("static", "index.html", package = "mattR"),
                list(title = "foo", text = "bar"))
 }
-

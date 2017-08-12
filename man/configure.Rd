@@ -17,4 +17,3 @@ App configuration file
 configure()
 }
 }
-

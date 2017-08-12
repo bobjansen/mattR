@@ -17,4 +17,3 @@ Create a skeleton for the app
 buildApp()
 }
 }
-

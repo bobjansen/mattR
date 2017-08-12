@@ -14,4 +14,3 @@ Display the usage message
 usageMessage()
 }
 }
-

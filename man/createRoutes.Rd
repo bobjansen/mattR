@@ -2,7 +2,7 @@
 % Please edit documentation in R/routes.R
 \name{createRoutes}
 \alias{createRoutes}
-\title{Create routes from a list of urls and handlers}
+\title{createRoutes}
 \usage{
 createRoutes(...)
 }
@@ -19,4 +19,3 @@ createRoutes(
    c("contact.html", function(...) 2)
 }
 }
-

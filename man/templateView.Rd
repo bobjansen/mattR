@@ -2,7 +2,7 @@
 % Please edit documentation in R/views.R
 \name{templateView}
 \alias{templateView}
-\title{Title}
+\title{Respond with a rendered template}
 \usage{
 templateView(templateFile, data)
 }
@@ -16,10 +16,9 @@ rendering}
 A response object with as body the rendered template
 }
 \description{
-Title
+Respond with a rendered template
 }
 \examples{
 templateView(system.file("static", "index.html", package = "mattR"),
              list(title = "foo", text = "bar"))
 }
-

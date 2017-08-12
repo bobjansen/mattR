@@ -17,4 +17,3 @@ Display the help message
 helpMessage()
 }
 }
-
