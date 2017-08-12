@@ -12,11 +12,11 @@
 #' }
 staticView <- function(staticDir, urlPath) {
   function(request) {
-    requestPath <- request$PATH_INFO
+    requestPath <- request[["PATH_INFO"]]
 
     # Ensure that urlPath is a prefix for the requested path.
     if (!startsWith(requestPath, urlPath)) {
-      return(NULL)
+      return()
     }
 
     staticResourceSubPath <- substring(requestPath, nchar(urlPath) + 1)
