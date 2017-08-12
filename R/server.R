@@ -10,17 +10,9 @@
 #' }
 buildApp <- function(config) {
 
-  routesPath <- file.path(getwd(), "routes.R")
-  if (file.exists(routesPath)) {
-    source(routesPath)
-  } else {
-    source(system.file("defaults", "routes.R", package = "mattR"))
-  }
-  if (!exists("routes")) {
-    stop("The routes.R file should define a variable 'routes'.")
-  }
-
   debug <- getConfigOrDefault(config, "debug", FALSE)
+
+  routes <- getRoutes(debug)
 
   app <- list(
     call = function(request) {
