@@ -52,6 +52,10 @@ buildApp <- function(config) {
 runTestServer <- function() {
   config <- mattR::configure()
 
+  if (mattR::getConfigOrDefault(config, "debug", FALSE)) {
+    print("debug is on.")
+  }
+
   host <- "0.0.0.0"
   port <- as.numeric(mattR::getConfigOrDefault(config, "port",
                                                sample(1025:(2^16 - 1), 1)))
