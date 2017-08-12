@@ -59,6 +59,7 @@ templateView <- function(templateFile, data) {
 #'  rendering
 #'
 #' @return the rendered template
+#' @export
 #'
 #' @examples
 #' renderTemplate(system.file("static", "index.html", package = "mattR"),
