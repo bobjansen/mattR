@@ -58,7 +58,7 @@ getRoutes <- function(debug) {
   routes <- NULL
   routesPath <- file.path(getwd(), "routes.R")
   if (file.exists(routesPath)) {
-    source(routesPath)
+    source(routesPath, local = TRUE)
   } else {
     source(system.file("defaults", "routes.R", package = "mattR"), local = TRUE)
   }
@@ -68,7 +68,7 @@ getRoutes <- function(debug) {
     #print(routes)
   }
 
-  if (is.null("routes")) {
+  if (is.null(routes)) {
     stop("The routes.R file should define a variable 'routes'.")
   }
   routes
