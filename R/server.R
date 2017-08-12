@@ -77,7 +77,6 @@ runTestServer <- function() {
 #'
 #' @return TRUE on success, FALSE on failure.
 #' @export
-#'
 killByToken <- function(token) {
   procs <- system2("ps", args = "aux", stdout = TRUE)
 
@@ -102,12 +101,16 @@ killByToken <- function(token) {
 #' \dontrun{
 #' startServerProcess()
 #' }
-startServerProcess <- function() {
+startServerProcess <- function(logDir = getwd()) {
   scriptName <- system.file("scripts", "mattR", package = "mattR")
 
   token <- as.character(sample(1:1e6, 1))
 
-  system2(scriptName, wait = FALSE, args = token, stdout = "/opt/code/mattR/stdout.log", stderr = "/opt/code/mattR/stderr.log")
+  system2(scriptName,
+          wait = FALSE,
+          args = token,
+          stdout = file.path(logDir, "stdout.log"),
+          stderr = file.path(logDir, "stderr.log"))
 
   token
 }

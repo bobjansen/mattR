@@ -2,9 +2,12 @@
 % Please edit documentation in R/server.R
 \name{startServerProcess}
 \alias{startServerProcess}
-\title{Start a server as an external process, killable by killByToken(output)}
+\title{startServerProcess}
 \usage{
-startServerProcess()
+startServerProcess(logDir = getwd())
+}
+\arguments{
+\item{logDir}{The default logging directory.}
 }
 \value{
 The probably unique token of the process.
@@ -17,4 +20,3 @@ Start a server as an external process, killable by killByToken(output)
 startServerProcess()
 }
 }
-
