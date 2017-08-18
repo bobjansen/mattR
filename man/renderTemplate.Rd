@@ -9,11 +9,11 @@ renderTemplate(templateFile, data)
 \arguments{
 \item{templateFile}{Filepath of a whisker template}
 
-\item{data}{named list or environment with variables that will be used during
-rendering}
+\item{data}{Named list or environment with variables that will be used during
+rendering.}
 }
 \value{
-the rendered template
+The rendered template.
 }
 \description{
 Render a template given data

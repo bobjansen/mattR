@@ -52,7 +52,7 @@ matchRoutes <- function(routes, request) {
   notFoundResponse()
 }
 
-getRoutes <- function(debug) {
+getRoutes <- function(debug = FALSE) {
   # The file specified by routesPath should create a `routes` variable.
   # Defining beforehand prevents a note being issued by `R CMD check`.
   routes <- NULL

@@ -18,11 +18,11 @@ skeleton <- function(path = getwd()) {
     file.copy(file.path(fromPath, "manage"), path)
   }
 
-  invisible(NULL)
+  invisible()
 }
 
 #' Display the help message
-#' @param ... Ignored, just show the default help message
+#' @param ... Ignored, just show the default help message.
 #' @export
 #'
 #' @examples
@@ -30,7 +30,7 @@ skeleton <- function(path = getwd()) {
 #' helpMessage()
 #' }
 helpMessage <- function(...) {
-    cat("Help message\n") # nocov
+    usageMessage() # nocov
 }
 
 #' Display the usage message
@@ -41,6 +41,6 @@ helpMessage <- function(...) {
 #' usageMessage()
 #' }
 usageMessage <- function() {
-    cat("Usage message\n") # nocov
+    cat("Start a server using './manage runServer'.\n") # nocov
 }
 

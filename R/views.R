@@ -81,10 +81,10 @@ templateView <- function(templateFile, data) {
 #' Render a template given data
 #'
 #' @param templateFile Filepath of a whisker template
-#' @param data named list or environment with variables that will be used during
-#'  rendering
+#' @param data Named list or environment with variables that will be used during
+#' rendering.
 #'
-#' @return the rendered template
+#' @return The rendered template.
 #' @export
 #'
 #' @examples
