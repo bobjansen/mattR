@@ -53,16 +53,22 @@ runTestServer <- function() {
   config <- mattR::configure()
 
   if (mattR::getConfigOrDefault(config, "debug", FALSE)) {
-    print("debug is on.")
+    cat("* debug is on.\n")
   }
+
+  cat("* R Version:",
+      paste0(R.version[["major"]], ".", R.version[["minor"]]),
+      "\n")
 
   host <- "0.0.0.0"
   port <- as.numeric(mattR::getConfigOrDefault(config, "port",
                                                sample(1025:(2^16 - 1), 1)))
 
+  cat(paste0("* Listening on tcp://", host, ":", port, "\n"))
+
   app <- buildApp(config)
 
-  print(paste("Starting app on:", paste0(host, ":", port)))
+  cat("Use Ctrl-C to stop\n")
   httpuv::runServer(host, port, app)
 }
 
