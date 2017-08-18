@@ -10,7 +10,7 @@ skeleton <- function(path = getwd()) {
   if (length(list.files(path)) +
       length(list.dirs(path, recursive = FALSE)) > 0
   ) {
-    cat("The directory is not empty, exiting.")
+    cat("The directory is not empty, exiting.\n")
     return()
   } else {
     fromPath <- file.path(system.file(package = "mattR"), "skeleton")
