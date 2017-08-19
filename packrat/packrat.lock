@@ -3,15 +3,47 @@ PackratVersion: 0.4.8.1
 RVersion: 3.3.2
 Repos: CRAN=https://cran.uni-muenster.de
 
+Package: BH
+Source: CRAN
+Version: 1.62.0-1
+
+Package: DBI
+Source: CRAN
+Version: 0.7
+Hash: 1ab72df487f06ad5f0de05446cdd4bd6
+
 Package: R6
 Source: CRAN
 Version: 2.2.1
 Hash: 530f0b839551f96ec991ce4f93156ee1
 
+Package: RSQLite
+Source: CRAN
+Version: 2.0
+Requires: BH, DBI, Rcpp, bit64, blob, memoise, pkgconfig, plogr
+Hash: 4a5b22207d2176cae55ed9e0856660b3
+
 Package: Rcpp
 Source: CRAN
-Version: 0.12.11
-Hash: 2ee22f3b5e75dec80b1d8eca61cd96d8
+Version: 0.12.12
+Hash: 8b3d5ebb9a9a4ab5c86b3a81b0cfb774
+
+Package: bit
+Source: CRAN
+Version: 1.1-12
+Hash: a4cdb11cf9fd6dd38f9f40c413b81e93
+
+Package: bit64
+Source: CRAN
+Version: 0.9-7
+Requires: bit
+Hash: 4b195615d19ba49c114eb04e09e30a96
+
+Package: blob
+Source: CRAN
+Version: 1.1.0
+Requires: tibble
+Hash: e29764e47f2faf0cd5b74cbcddc3fa9c
 
 Package: crayon
 Source: CRAN
@@ -26,14 +58,14 @@ Hash: e53fb8c58673df868183697e39a6a4d6
 Package: htmltools
 Source: CRAN
 Version: 0.3.6
-Hash: eeba9fb36d4cb6cc66f060187102be41
 Requires: Rcpp, digest
+Hash: 5b070a04ef8df1953544873db1c5896e
 
 Package: httpuv
 Source: CRAN
 Version: 1.3.5
-Hash: e2d5ec877601df43efe66e9096d0fc93
 Requires: Rcpp
+Hash: 2cc5284565b71276d1faf3d5c043fe4e
 
 Package: jsonlite
 Source: CRAN
@@ -45,6 +77,11 @@ Source: CRAN
 Version: 1.5
 Hash: bdc4d48c3135e8f3b399536ddf160df4
 
+Package: memoise
+Source: CRAN
+Version: 1.1.0
+Requires: digest
+
 Package: mime
 Source: CRAN
 Version: 0.5
@@ -55,17 +92,42 @@ Source: CRAN
 Version: 0.4.8-1
 Hash: 6ad605ba7b4b476d84be6632393f5765
 
+Package: pkgconfig
+Source: CRAN
+Version: 2.0.1
+Hash: 0dda4a2654a22b36a715c2b0b6fbacac
+
+Package: plogr
+Source: CRAN
+Version: 0.1-1
+Hash: fb19215402e2d9f1c7f803dcaa806fc2
+
 Package: praise
 Source: CRAN
 Version: 1.0.0
 Hash: 77da8f1df873a4b91e5c4a68fe2fb1b6
 
+Package: rlang
+Source: CRAN
+Version: 0.1.2
+Hash: c17b638e3282aa222a47112d7a60bc66
+
+Package: scrypt
+Source: github
+Version: 0.1.2
+Requires: Rcpp
+Hash: e35a76aadcd508ab0b0f5a50cd6285f5
+GithubRepo: rscrypt
+GithubUsername: rstudio
+GithubRef: master
+GithubSha1: a13f9974f0259be5822b76f5f06461b7038d5fd9
+
 Package: shiny
 Source: CRAN
 Version: 1.0.4
-Hash: bb780de024f905a7fcac8a45e6cce14a
 Requires: R6, digest, htmltools, httpuv, jsonlite, mime, sourcetools,
     xtable
+Hash: bb780de024f905a7fcac8a45e6cce14a
 
 Package: sourcetools
 Source: CRAN
@@ -75,8 +137,14 @@ Hash: 226d56d7469587da40b0f96180e711b4
 Package: testthat
 Source: CRAN
 Version: 1.0.2
-Hash: 88d5291104227f9dc2e7c7c1d0eb6c74
 Requires: R6, crayon, digest, magrittr, praise
+Hash: 88d5291104227f9dc2e7c7c1d0eb6c74
+
+Package: tibble
+Source: CRAN
+Version: 1.3.3
+Requires: Rcpp, rlang
+Hash: 6a18f6da2887d2c4c4a6554027161483
 
 Package: whisker
 Source: CRAN
