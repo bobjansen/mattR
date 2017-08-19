@@ -2,6 +2,8 @@
 #' @param path Target path for skeleton creation
 #' @export
 #'
+#' @return \code{TRUE} on success, \code{FALSE} otherwise.
+#'
 #' @examples
 #' \dontrun{
 #' buildApp()
@@ -11,14 +13,13 @@ skeleton <- function(path = getwd()) {
       length(list.dirs(path, recursive = FALSE)) > 0
   ) {
     cat("The directory is not empty, exiting.\n")
-    return()
+    FALSE
   } else {
     fromPath <- file.path(system.file(package = "mattR"), "skeleton")
     file.copy(file.path(fromPath, "routes.R"), path)
     file.copy(file.path(fromPath, "manage"), path)
+    TRUE
   }
-
-  invisible()
 }
 
 #' Display the help message
@@ -30,7 +31,7 @@ skeleton <- function(path = getwd()) {
 #' helpMessage()
 #' }
 helpMessage <- function(...) {
-    usageMessage() # nocov
+  usageMessage() # nocov
 }
 
 #' Display the usage message
@@ -41,6 +42,6 @@ helpMessage <- function(...) {
 #' usageMessage()
 #' }
 usageMessage <- function() {
-    cat("Start a server using './manage runServer'.\n") # nocov
+  cat("Start a server using './manage runServer'.\n") # nocov
 }
 

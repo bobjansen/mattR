@@ -7,7 +7,7 @@
 helpMessage(...)
 }
 \arguments{
-\item{...}{Ignored, just show the default help message}
+\item{...}{Ignored, just show the default help message.}
 }
 \description{
 Display the help message
