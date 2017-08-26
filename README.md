@@ -23,3 +23,7 @@ skeleton()
 After creating the app using `skeleton()` you need to create routes and views
 for your app.
 
+## Examples
+
+Example application can be found in 
+[mattR_examples](https://github.com/bobjansen/mattR_examples).
