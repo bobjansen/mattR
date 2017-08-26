@@ -13,7 +13,7 @@ Install `mattR` from GitHub using
 the package and create a skeleton for your app.
 
 ```R
-devtools::install_github("mattR")
+devtools::install_github("bobjansen/mattR")
 library(mattR)
 skeleton()
 ```
