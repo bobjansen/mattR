@@ -3,6 +3,7 @@
 export(buildApp)
 export(configure)
 export(createRoutes)
+export(fileUrl)
 export(genericView)
 export(getConfigOrDefault)
 export(helpMessage)
