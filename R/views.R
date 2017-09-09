@@ -42,6 +42,7 @@ staticView <- function(staticDir, urlPath) {
 #' @export
 #'
 #' @import shiny
+#' @importFrom utils modifyList
 #'
 #' @examples
 #' genericView(function() "Hello World!")
@@ -52,6 +53,13 @@ genericView <- function(FUN) {
     } else {
       list()
     }
+    params <- if (request[["REQUEST_METHOD"]] == "POST") {
+      postParams <- request[["rook.input"]]$read_lines()
+      modifyList(params, shiny::parseQueryString(postParams))
+    } else {
+      params
+    }
+
     create200Response(FUN(params))
   }
 }

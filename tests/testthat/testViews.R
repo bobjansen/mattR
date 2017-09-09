@@ -102,7 +102,8 @@ test_that("Static genericView returns a function creating response", {
   responseText = "Hello World!"
   view <- genericView(function(...) responseText)
 
-  resp <- view("foo")
+  resp <- view(list(REQUEST_METHOD = "GET",
+                    QUERY_STRING = ""))
 
   expect_true(is(resp, "response"))
 
@@ -117,7 +118,8 @@ test_that("Dynamic genericView returns a function creating response", {
   responseText = "Hello World!"
   view <- genericView(function(params) params[["Text"]])
 
-  resp <- view(list(QUERY_STRING = paste0("?Text=", responseText)))
+  resp <- view(list(REQUEST_METHOD = "GET",
+                    QUERY_STRING = paste0("?Text=", responseText)))
 
   expect_true(is(resp, "response"))
 
