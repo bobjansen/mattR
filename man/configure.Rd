@@ -2,7 +2,7 @@
 % Please edit documentation in R/configure.R
 \name{configure}
 \alias{configure}
-\title{App configuration file}
+\title{configure}
 \usage{
 configure()
 }
@@ -10,7 +10,14 @@ configure()
 the configuration
 }
 \description{
-App configuration file
+Load the default configuration and the configuration defined in the
+\code{config} file in the working directory.
+}
+\details{
+The default configuration is retrieved from \code{defaults/config.R} in the
+package. Then settings found in the variable named \code{config} in
+\code{config.R} in the working directory is used to overwrite to optionally
+overwrite settings.
 }
 \examples{
 \dontrun{
