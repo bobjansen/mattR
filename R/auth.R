@@ -17,7 +17,13 @@
 checkUserCredentials <- function(con, username, password) {
   sql <- "SELECT password FROM USERS where username = ?username;"
   query <- DBI::sqlInterpolate(con, sql, username = username)
-  scrypt::verifyPassword(DBI::dbGetQuery(con, query)[["password"]], password)
+  hashedPass <- DBI::dbGetQuery(con, query)[["password"]]
+  if (length(hashedPass) == 0) {
+    scrypt::verifyPassword("", password)
+    FALSE
+  } else {
+    scrypt::verifyPassword(hashedPass, password)
+  }
 }
 
 #' createUser
