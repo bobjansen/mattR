@@ -1,4 +1,5 @@
 packageConfig <- list(
   port = 8080,
-  debug = TRUE
+  debug = TRUE,
+  dbConnection = NULL
 )
