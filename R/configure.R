@@ -16,6 +16,7 @@
 #' configure()
 #' }
 configure <- function() {
+  config <- packageConfig <- NULL
   source(system.file("defaults", "config.R", package = "mattR"), local = TRUE)
   appConfigFile <- file.path(getwd(), "config.R")
   if (file.exists(appConfigFile)) {
