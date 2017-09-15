@@ -29,8 +29,20 @@ createConnection <- function() {
 #' }
 setupDatabase <- function() {
   con <- createConnection()
-  sql <- "CREATE TABLE USERS (username TEXT primary key, password TEXT)"
-  res <- DBI::dbSendQuery(con, sql)
+  sqlUsers <- "CREATE TABLE USERS (username TEXT primary key, password TEXT)"
+  res <- DBI::dbSendQuery(con, sqlUsers)
+  DBI::dbClearResult(res)
+
+  # Thanks Django!
+  sqlSession <- 'CREATE TABLE IF NOT EXISTS "SESSION"
+    ("session_key" varchar(40) NOT NULL PRIMARY KEY,
+     "session_data" text NOT NULL,
+     "expire_date" datetime NOT NULL);'
+  sqlSessionIndex <- 'CREATE INDEX "django_session_expire_date_index" ON
+    "session" ("expire_date");'
+  res <- DBI::dbSendQuery(con, sqlSession)
+  DBI::dbClearResult(res)
+  res <- DBI::dbSendQuery(con, sqlSessionIndex)
   DBI::dbClearResult(res)
   con
 }

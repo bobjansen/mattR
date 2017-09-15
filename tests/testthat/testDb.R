@@ -7,7 +7,9 @@ test_that("Connecting to the database works", {
 test_that("Setting up the database works", {
   con <- setupDatabase()
   on.exit(DBI::dbDisconnect(con))
-  expect_equal(DBI::dbListTables(con), c("USERS"))
+  dbTables <- DBI::dbListTables(con)
+  dbTables <- dbTables[order(dbTables)]
+  expect_equal(dbTables, c("SESSION", "USERS"))
 })
 
 test_that("Creating a user works", {
