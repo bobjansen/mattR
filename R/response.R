@@ -5,8 +5,11 @@ create200Response <- function(...) {
 response <- function(body, statusCode) {
   structure(
     list(body = body,
-         headers = list('Content-Type' = ''),
-         status = statusCode),
+         headers = list(
+           'Content-Type' = '',
+           'Set-Cookie' = 'foo=bar'),
+         status = statusCode
+    ),
     class = "response"
   )
 }

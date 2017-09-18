@@ -33,7 +33,7 @@ setupDatabase <- function() {
   res <- DBI::dbSendQuery(con, sqlUsers)
   DBI::dbClearResult(res)
 
-  # Thanks Django!
+  # The table structure is taken from a standard Django install.
   sqlSession <- 'CREATE TABLE IF NOT EXISTS "SESSION"
     ("session_key" varchar(40) NOT NULL PRIMARY KEY,
      "session_data" text NOT NULL,
