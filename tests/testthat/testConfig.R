@@ -19,6 +19,7 @@ test_that("Defaults are given when key is not found", {
 
 test_that("The correct value is given when it exists", {
   config <- configure()
+  on.exit(DBI::dbDisconnect(config[["dbConnection"]]))
 
-  expect_equal(getConfigOrDefault(config, "port", "foo"), config$port)
+  expect_equal(getConfigOrDefault(config, "port", "foo"), config[["port"]])
 })
