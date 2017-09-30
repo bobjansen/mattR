@@ -12,23 +12,22 @@ buildApp <- function(config) {
 
   debug <- getConfigOrDefault(config, "debug", FALSE)
 
-  routes <- getRoutes(debug)
-
   app <- list(
     call = function(request) {
       if (debug) {
-        print(paste(request$REQUEST_METHOD, "request on URL:",
-                    request$PATH_INFO))
+        print(paste(request[["REQUEST_METHOD"]], "request on URL:",
+                    request[["PATH_INFO"]]))
       }
 
-      response <- matchRoutes(routes, request)
+      resp <- getResponse(setupResponse(), request)
 
       if (debug) {
-        print(paste("Response for", request$REQUEST_METHOD, "request on URL:",
-                    request$PATH_INFO, "has status", response$status))
+        print(paste("Response for", request[["REQUEST_METHOD"]],
+                    "request on URL:", request[["PATH_INFO"]], "has status",
+                    resp[["status"]]))
       }
 
-      response
+      resp
     },
     onWSOpen = function(ws) {
       ws$onMessage(function(binary, message) {
@@ -49,7 +48,7 @@ buildApp <- function(config) {
 #' \dontrun{
 #' runTestServer()
 #' }
-runTestServer <- function() {
+runTestServer <- function(daemonized = FALSE) {
   config <- mattR::configure()
 
   if (mattR::getConfigOrDefault(config, "debug", FALSE)) {
@@ -68,54 +67,56 @@ runTestServer <- function() {
 
   app <- buildApp(config)
 
-  cat("Use Ctrl-C to stop\n")
-  httpuv::runServer(host, port, app)
-}
-
-
-#' Kill a process by the given token.
-#'
-#' @param token Token of the process to kill.
-#'
-#' @return TRUE on success, FALSE on failure.
-#' @export
-killByToken <- function(token) {
-  procs <- system2("ps", args = "aux", stdout = TRUE)
-
-  lines <- grep(paste("mattR --args", token), procs)
-  if (length(lines) > 1) {
-    stop("Multiple processes found with supposedly unique token")
-  } else if (length(lines) == 0) {
-    warning(paste("No process found for token:", token))
-    FALSE
+  if (daemonized) {
+    .pkgenv[["handle"]] <- httpuv::startDaemonizedServer(host, port, app)
   } else {
-    system2("kill", args = strsplit(procs[[lines[1]]], "\\s+")[[1]][[2]])
-    TRUE
+    cat("Use Ctrl-C to stop\n")
+    httpuv::runServer(host, port, app)
   }
+
+  # Closing the handle twice using httpuv::stopDaemonizedServer will crash R.
+  # Therefore handle management is done by mattR and the handle is never returned.
+  invisible()
 }
 
-#' startServerProcess
+#' isRunning
 #'
-#' Start a server as an external process, killable by killByToken(output)
+#' Check whether a daemonized server is running.
 #'
-#' @param logDir The default logging directory.
-#' @return The probably unique token of the process.
+#' @return Whether the server is running.
+#' @export
+#'
+#' @examples
+#' isRunning()
+isRunning <- function() {
+  !is.null(.pkgenv[["handle"]])
+}
+
+#' getHandle
+#'
+#' Retrieve the handle of the server.
+getHandle <- function() {
+  .pkgenv[["handle"]]
+}
+
+#' stopDaemonizedServer
+#'
+#' Stop a daemonized server
+#'
+#' @return \code{invisible()}
+#'
+#' @import httpuv
+#'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' startServerProcess()
+#' stopDaemonizedServer()
 #' }
-startServerProcess <- function(logDir = getwd()) {
-  scriptName <- system.file("scripts", "mattR", package = "mattR")
-
-  token <- as.character(sample(1:1e6, 1))
-
-  system2(scriptName,
-          wait = FALSE,
-          args = token,
-          stdout = file.path(logDir, "stdout.log"),
-          stderr = file.path(logDir, "stderr.log"))
-
-  token
+stopDaemonizedServer <- function() {
+  httpuv::stopDaemonizedServer(.pkgenv[["handle"]])
+  # What to do when stopping fails?
+  .pkgenv[["handle"]] <- NULL
+  invisible()
 }
+

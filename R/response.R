@@ -1,29 +1,25 @@
-create200Response <- function(...) {
-  response(..., statusCode = 200L)
-}
-
-response <- function(body, statusCode) {
+response <- function(body = NULL, statusCode = NULL, contentType = '') {
   structure(
+    # Rook requires taht Content-Type is set.
     list(body = body,
-         headers = list(
-           'Content-Type' = '',
-           'Set-Cookie' = 'foo=bar'),
-         status = statusCode
-    ),
+         headers = list('Content-Type' = contentType),
+         status = statusCode),
     class = "response"
   )
 }
 
 notFoundResponse <- function() {
-  list(
-    status = 404L,
-    headers = list(
-      # Invalid, but the browser is pretty smart.
-      'Content-Type' = ''
+  structure(
+    list(
+      status = 404L,
+      headers = list(
+        'Content-Type' = 'text/plain'
+      ),
+      body = paste(
+        sep = "\r\n",
+        "404 Page Not Found"
+      )
     ),
-    body = paste(
-      sep = "\r\n",
-      404L
-    )
+    class = "response"
   )
 }

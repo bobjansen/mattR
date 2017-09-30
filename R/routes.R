@@ -1,53 +1,11 @@
-#' createRoutes
-#'
-#' Create routes from a list of urls and handlers
-#'
-#' @param ... A list of c(url, handler)'s
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' createRoutes(
-#'    c("index.html", function(...) 1),
-#'    c("contact.html", function(...) 2)
-#'}
-createRoutes <- function(...) {
-  routes <- list(...)
-  lapply(routes, function(route) {
-    createRoute(route[[1]], route[[2]])
-  })
-}
-
 matchRequest <- function(request, pattern) {
   regexpr(pattern, request$PATH_INFO) == 1
 }
 
-#' Return a function that dispatches to `handler()` if `path` matches.
-#' @param path URL path.
-#' @param handler Handler for this request given the path.
-#' @return A response if the path is matched, NULL if the path is not matched.
-createRoute <- function(path, handler) {
-  function(request) {
-    if (matchRequest(request, path)) {
-      response <- handler(request)
-      if (is.null(response)) {
-        stop("Handler for ", path,
-             " returned NULL, should be response object.")
-      } else {
-        response
-      }
-    } else {
-      NULL
-    }
-  }
-}
-
-matchRoutes <- function(routes, request) {
+matchRoutes <- function(routes, resp, req) {
   for (route in routes) {
-    response <- route(request)
-    if (!is.null(response)) {
-      return(response)
+    if (matchRequest(req, route[[1]])) {
+      return(route[[2]](resp, req))
     }
   }
   notFoundResponse()
@@ -65,7 +23,7 @@ getRoutes <- function(debug = FALSE) {
   }
 
   if (debug) {
-    cat(paste0("Path of routes file is: ", routesPath, "\n"))
+    cat(paste0("Path of the user routes file would be: ", routesPath, "\n"))
     #print(routes)
   }
 

@@ -16,17 +16,11 @@ test_that("response has headers", {
   expect_true("headers" %in% names(resp))
 })
 
-test_that("response created by create200Response has status 200", {
-  resp <- create200Response("foo")
-
-  expect_equal(resp$status, 200)
-})
-
 test_that("Static View returns the proper file", {
   request <- list(PATH_INFO = 'static/index.html')
   view <- staticView(system.file("static", package = "mattR"),
                      "static")
-  resp <- view(request)
+  resp <- view(list(), request)
 
   expect_true("body" %in% names(resp))
   # Check that text from the template itself is present.
@@ -44,7 +38,7 @@ test_that("Static View returns the index file when it's not given", {
   request <- list(PATH_INFO = 'static')
   view <- staticView(system.file("static", package = "mattR"),
                      "static")
-  resp <- view(request)
+  resp <- view(list(), request)
 
   expect_true("body" %in% names(resp))
   # Check that text from the template itself is present.
@@ -62,7 +56,7 @@ test_that("Static View returns NULL when the prefix is not used.", {
   request <- list(PATH_INFO = 'index.html')
   view <- staticView(system.file("static", package = "mattR"),
                      "static")
-  resp <- view(request)
+  resp <- view(NULL, request)
 
   expect_equal(resp, NULL)
 })
@@ -71,7 +65,7 @@ test_that("Static View returns NULL when the file doesn't exist.", {
   request <- list(PATH_INFO = 'static/index2.html')
   view <- staticView(system.file("static", package = "mattR"),
                      "static")
-  resp <- view(request)
+  resp <- view(NULL, request)
 
   expect_equal(resp, NULL)
 })
@@ -84,7 +78,7 @@ test_that("Template View returns the proper template", {
   request <- list()
   view <- templateView(system.file("static", "index.html", package = "mattR"),
                        list(title = "foo", text = "bar"))
-  resp <- view(request)
+  resp <- view(list(), request)
 
   expect_true("body" %in% names(resp))
   # Check that text from the template itself is present.
@@ -95,14 +89,15 @@ test_that("Template View returns the proper template", {
   expect_true(grepl("bar", resp[["body"]], fixed = TRUE))
 
   expect_true("status" %in% names(resp))
-  expect_true(resp[["status"]] == 200)
+  expect_true(resp[["status"]] == 200L)
 })
 
 test_that("Static genericView returns a function creating response", {
   responseText = "Hello World!"
   view <- genericView(function(...) responseText)
 
-  resp <- view(list(REQUEST_METHOD = "GET",
+  resp <- view(structure(list(), class = "response"),
+               list(REQUEST_METHOD = "GET",
                     QUERY_STRING = ""))
 
   expect_true(is(resp, "response"))
@@ -111,14 +106,15 @@ test_that("Static genericView returns a function creating response", {
   expect_true(resp[["body"]] == responseText)
 
   expect_true("status" %in% names(resp))
-  expect_true(resp[["status"]] == 200)
+  expect_true(resp[["status"]] == 200L)
 })
 
 test_that("Dynamic genericView returns a function creating response", {
   responseText = "Hello World!"
   view <- genericView(function(params) params[["Text"]])
 
-  resp <- view(list(REQUEST_METHOD = "GET",
+  resp <- view(structure(list(), class = "response"),
+               list(REQUEST_METHOD = "GET",
                     QUERY_STRING = paste0("?Text=", responseText)))
 
   expect_true(is(resp, "response"))
@@ -127,6 +123,6 @@ test_that("Dynamic genericView returns a function creating response", {
   expect_true(resp[["body"]] == responseText)
 
   expect_true("status" %in% names(resp))
-  expect_true(resp[["status"]] == 200)
+  expect_true(resp[["status"]] == 200L)
 })
 

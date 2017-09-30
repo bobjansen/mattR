@@ -4,7 +4,7 @@
 \alias{runTestServer}
 \title{Run a server for testing mattR apps}
 \usage{
-runTestServer()
+runTestServer(daemonized = FALSE)
 }
 \value{
 The httpuv handle to the server process
