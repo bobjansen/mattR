@@ -65,7 +65,7 @@ getRoutes <- function(debug = FALSE) {
   }
 
   if (debug) {
-    cat(paste0("Path of routes file is: ", routesPath, "\n"))
+    cat(paste0("Path of the user routes file would be: ", routesPath, "\n"))
     #print(routes)
   }
 
