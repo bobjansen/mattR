@@ -1,3 +1,17 @@
+#' Guess the Content-Type for a file or filepath.
+#'
+#' @return The guess of the Content-Type
+guessContentTypeFromFilePath <- function(filepath) {
+  if (endsWith(filepath, 'html') ||
+      endsWith(filepath, 'htm')) {
+      'text/html'
+    } else if (endsWith(filepath, 'css')) {
+      'text/css'
+    } else {
+      ''
+  }
+}
+
 #' Respond with a static file
 #'
 #' @param staticDir Location of the static files on the server
