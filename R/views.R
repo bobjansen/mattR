@@ -25,7 +25,7 @@ guessContentTypeFromFilePath <- function(filepath) {
 #' staticFun <- staticView("/var/www/static/", "/static/")
 #' }
 staticView <- function(staticDir, urlPath) {
-  function(request) {
+  function(resp, request) {
     requestPath <- request[["PATH_INFO"]]
 
     # Ensure that urlPath is a prefix for the requested path.
@@ -40,8 +40,15 @@ staticView <- function(staticDir, urlPath) {
     }
     fileName <- file.path(staticDir, staticResourceSubPath)
 
+    contentType <- guessContentTypeFromFilePath(staticResourceSubPath)
+
     if (file.exists(fileName)) {
-      create200Response(readChar(fileName, file.info(fileName)$size))
+      resp[["body"]] <- paste0(resp[["body"]],
+                               readChar(fileName,
+                                        file.info(fileName)[["size"]]))
+      resp[["headers"]][["Content-Type"]] <- contentType
+      resp[["status"]] <- 200L
+      resp
     } else {
       NULL
     }
@@ -61,7 +68,7 @@ staticView <- function(staticDir, urlPath) {
 #' @examples
 #' genericView(function() "Hello World!")
 genericView <- function(FUN) {
-  function(request) {
+  function(resp, request) {
     params <- if ("QUERY_STRING" %in% names(request)) {
       shiny::parseQueryString(request[["QUERY_STRING"]])
     } else {
@@ -74,7 +81,9 @@ genericView <- function(FUN) {
       params
     }
 
-    create200Response(FUN(params))
+    resp[["body"]] <- paste0(resp[["body"]], FUN(params))
+    resp[["status"]] <- 200L
+    resp
   }
 }
 
@@ -95,8 +104,14 @@ templateView <- function(templateFile, data) {
     stop("File '", templateFile, "' doesn't exist")
   }
 
-  function(request) {
-    create200Response(renderTemplate(templateFile, data))
+  contentType <- guessContentTypeFromFilePath(templateFile)
+
+  function(resp, request) {
+    resp[["body"]] <- paste0(resp[["body"]],
+                             renderTemplate(templateFile, data))
+    resp[["headers"]][["Content-Type"]] <- contentType
+    resp[["status"]] <- 200L
+    resp
   }
 }
 

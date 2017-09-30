@@ -12,23 +12,22 @@ buildApp <- function(config) {
 
   debug <- getConfigOrDefault(config, "debug", FALSE)
 
-  routes <- getRoutes(debug)
-
   app <- list(
     call = function(request) {
       if (debug) {
-        print(paste(request$REQUEST_METHOD, "request on URL:",
-                    request$PATH_INFO))
+        print(paste(request[["REQUEST_METHOD"]], "request on URL:",
+                    request[["PATH_INFO"]]))
       }
 
-      response <- matchRoutes(routes, request)
+      resp <- getResponse(setupResponse(), request)
 
       if (debug) {
-        print(paste("Response for", request$REQUEST_METHOD, "request on URL:",
-                    request$PATH_INFO, "has status", response$status))
+        print(paste("Response for", request[["REQUEST_METHOD"]],
+                    "request on URL:", request[["PATH_INFO"]], "has status",
+                    resp[["status"]]))
       }
 
-      response
+      resp
     },
     onWSOpen = function(ws) {
       ws$onMessage(function(binary, message) {
