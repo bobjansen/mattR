@@ -94,7 +94,11 @@ test_that("Template View returns the proper template", {
 
 test_that("Static genericView returns a function creating response", {
   responseText = "Hello World!"
-  view <- genericView(function(...) responseText)
+  view <- genericView(function(resp, request, params) {
+                        resp[["body"]] <- responseText
+                        resp[["status"]] <- 200L
+                        resp
+                       })
 
   resp <- view(structure(list(), class = "response"),
                list(REQUEST_METHOD = "GET",
@@ -111,7 +115,11 @@ test_that("Static genericView returns a function creating response", {
 
 test_that("Dynamic genericView returns a function creating response", {
   responseText = "Hello World!"
-  view <- genericView(function(params) params[["Text"]])
+  view <- genericView(function(resp, req, params) {
+                        resp[["body"]] <- params[["Text"]]
+                        resp[["status"]] <- 200L
+                        resp
+                     })
 
   resp <- view(structure(list(), class = "response"),
                list(REQUEST_METHOD = "GET",

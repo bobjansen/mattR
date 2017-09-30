@@ -83,9 +83,7 @@ genericView <- function(FUN) {
       params
     }
 
-    resp[["body"]] <- paste0(resp[["body"]], FUN(params))
-    resp[["status"]] <- 200L
-    resp
+    FUN(resp, request, params)
   }
 }
 
