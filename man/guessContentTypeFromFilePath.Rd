@@ -6,6 +6,9 @@
 \usage{
 guessContentTypeFromFilePath(filepath)
 }
+\arguments{
+\item{filepath}{Filepath of which to guess the Content-Type.}
+}
 \value{
 The guess of the Content-Type
 }

@@ -41,7 +41,8 @@ buildApp <- function(config) {
 
 #' Run a server for testing mattR apps
 #'
-#' @return The httpuv handle to the server process
+#' @param daemonized Whether to start the server daemonized.
+#' @return The httpuv handle to the server process.
 #' @export
 #'
 #' @examples

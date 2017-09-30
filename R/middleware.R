@@ -1,6 +1,12 @@
 #' Get a response
 #'
 #' Handle the middlewares, as is done in Django.
+#'
+#' @param resp The response object moving through the middlewares.
+#' @param req The request for which the response is being created.
+#'
+#' @importFrom methods is
+#'
 #' @export
 getResponse <- function(resp, req) {
   if (resp[["_middlewares_index"]] < length(resp[["_middlewares"]])) {

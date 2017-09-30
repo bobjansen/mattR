@@ -6,6 +6,11 @@
 \usage{
 getResponse(resp, req)
 }
+\arguments{
+\item{resp}{The response object moving through the middlewares.}
+
+\item{req}{The request for which the response is being created.}
+}
 \description{
 Handle the middlewares, as is done in Django.
 }

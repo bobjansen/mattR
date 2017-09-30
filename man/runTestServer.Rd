@@ -6,8 +6,11 @@
 \usage{
 runTestServer(daemonized = FALSE)
 }
+\arguments{
+\item{daemonized}{Whether to start the server daemonized.}
+}
 \value{
-The httpuv handle to the server process
+The httpuv handle to the server process.
 }
 \description{
 Run a server for testing mattR apps
