@@ -37,7 +37,7 @@ setupDatabase <- function() {
   sqlSession <- 'CREATE TABLE IF NOT EXISTS "SESSION"
     ("session_key" varchar(40) NOT NULL PRIMARY KEY,
      "session_data" text NOT NULL,
-     "expire_date" datetime NOT NULL);'
+     "creation_date" datetime NOT NULL);'
   sqlSessionIndex <- 'CREATE INDEX "django_session_expire_date_index" ON
     "session" ("expire_date");'
   res <- DBI::dbSendQuery(con, sqlSession)

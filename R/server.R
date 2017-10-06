@@ -19,7 +19,7 @@ buildApp <- function(config) {
                     request[["PATH_INFO"]]))
       }
 
-      resp <- getResponse(setupResponse(), request)
+      resp <- getResponse(setupResponse(request), request)
 
       if (debug) {
         print(paste("Response for", request[["REQUEST_METHOD"]],
