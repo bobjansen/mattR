@@ -10,6 +10,9 @@ sessionMiddleware <- function(resp, req) {
 
 #' Store a session id to the database
 #'
+#' @param con A connection to the database.
+#' @param sessionKey The session key for current request.
+#'
 #' @return The result of the DB query saving to the database.
 storeSessionId <- function(con, sessionKey) {
   sql <- "INSERT INTO SESSION (session_key, session_data, creation_date)

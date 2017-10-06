@@ -28,6 +28,8 @@ notFoundResponse <- function() {
 #'
 #' Set up an empty response to be handled by the attached middlewares.
 #'
+#' @param req The request triggering the response setup.
+#'
 #' @return An empty request with middlewares attached.
 setupResponse <- function(req) {
   config <- configure()
