@@ -80,7 +80,7 @@ runTestServer <- function(daemonized = FALSE) {
   invisible()
 }
 
-#' isRunning
+#' isMattRRunning
 #'
 #' Check whether a daemonized server is running.
 #'
@@ -88,8 +88,8 @@ runTestServer <- function(daemonized = FALSE) {
 #' @export
 #'
 #' @examples
-#' isRunning()
-isRunning <- function() {
+#' isMattRRunning()
+isMattRRunning <- function() {
   !is.null(.pkgenv[["handle"]])
 }
 
