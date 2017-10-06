@@ -5,11 +5,13 @@ routes <- list(
                                list(title = "Title", text = "text"))),
   c("/static/*", staticView(system.file("static", package = "mattR"),
                             "/static")),
-  c("/params", genericView(function(params) {
+  c("/params", genericView(function(resp, req, params) {
     if (length(params) > 0) {
-      paste0(names(params), ": ", params, collapse = ", ")
+      resp[["body"]] <- paste0(names(params), ": ", params, collapse = ", ")
     } else {
-      "No params given"
+      resp[["body"]] <- "No params given"
     }
+    resp[["status"]] <- 200L
+    resp
   }))
 )
