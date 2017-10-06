@@ -19,26 +19,3 @@ getResponse <- function(resp, req) {
   resp
 }
 
-
-#' Set up response
-#'
-#' Set up an empty response to be handled by the attached middlewares.
-#'
-#' @return An empty request with middlewares attached.
-setupResponse <- function() {
-  config <- configure()
-
-  resp <- response()
-  resp[["_middlewares"]] <- config[["middlewares"]]
-  resp[["_middlewares_index"]] <- 0L
-
-  debug <- getConfigOrDefault(config, "debug", FALSE)
-  routes <- getRoutes(debug)
-
-  resp[["_middlewares"]] <- c(resp[["_middlewares"]],
-                              function(resp, req) {
-                                matchRoutes(routes, resp, req)
-                              })
-  resp
-}
-
