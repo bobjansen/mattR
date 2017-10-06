@@ -13,6 +13,7 @@ test_that("Configure returns a list with port and debug", {
 
 test_that("Defaults are given when key is not found", {
   config <- configure()
+  on.exit(DBI::dbDisconnect(config[["dbConnection"]]))
 
   expect_equal(getConfigOrDefault(config, "NOTACONFIGOPTION", "foo"), "foo")
 })
