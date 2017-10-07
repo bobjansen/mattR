@@ -31,9 +31,10 @@ createConnection <- function(dsn = ":memory:") {
 #' \dontrun{
 #' setupDatabase()
 #' }
-  sqlUsers <- "CREATE TABLE USERS (username TEXT primary key, password TEXT)"
 setupDatabase <- function(dsn = ":memory:") {
   con <- createConnection(dsn)
+  sqlUsers <- "CREATE TABLE IF NOT EXISTS 'USERS'
+    (username TEXT primary key, password TEXT)"
   res <- DBI::dbSendQuery(con, sqlUsers)
   DBI::dbClearResult(res)
 
@@ -42,7 +43,8 @@ setupDatabase <- function(dsn = ":memory:") {
     ("session_key" varchar(40) NOT NULL PRIMARY KEY,
      "session_data" text NOT NULL,
      "creation_date" datetime NOT NULL);'
-  sqlSessionIndex <- 'CREATE INDEX "django_session_expire_date_index" ON
+  sqlSessionIndex <- 'CREATE INDEX IF NOT EXISTS
+    "mattR_session_expire_date_index" ON
     "session" ("expire_date");'
   res <- DBI::dbSendQuery(con, sqlSession)
   DBI::dbClearResult(res)
