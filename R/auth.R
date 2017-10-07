@@ -48,3 +48,23 @@ createUser <- function(con, username, password) {
   DBI::dbExecute(con, query)
 }
 
+#' existsUser
+#'
+#' Check whether a users exists
+#'
+#' @param con Database connection
+#' @param username Username
+#'
+#' @export
+#' @import DBI
+#' @examples
+#' \dontrun{
+#' createUser(con, "foo", "42")
+#' }
+existsUser <- function(con, username) {
+  sql <- "SELECT count(1) FROM USERS WHERE username = ?username"
+  query <- DBI::sqlInterpolate(con, sql, username = username)
+  res <- DBI::dbGetQuery(con, query)
+  res[[1]] >= 1
+}
+
