@@ -78,7 +78,11 @@ genericView <- function(FUN) {
     }
     params <- if (request[["REQUEST_METHOD"]] == "POST") {
       postParams <- request[["rook.input"]]$read_lines()
-      modifyList(params, shiny::parseQueryString(postParams))
+      if (length(postParams) > 0) {
+        modifyList(params, shiny::parseQueryString(postParams))
+      } else {
+        params
+      }
     } else {
       params
     }
