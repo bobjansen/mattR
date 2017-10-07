@@ -21,14 +21,39 @@ storeSessionId <- function(con, sessionKey) {
   DBI::dbExecute(con, query)
 }
 
+#' getSessionData
+#'
+#' @param con Connection to database.
+#' @param sessionKey The session key for which to get session data.
+#'
+#' @return The session data.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' getSessionData(con, "123")
+#' }
 getSessionData <- function(con, sessionKey) {
   sql <- "SELECT session_data FROM SESSION where session_key = ?sessionKey;"
   query <- DBI::sqlInterpolate(con,
                                sql,
                                sessionKey = sessionKey)
-  DBI::dbGetQuery(con, query)
+  DBI::dbGetQuery(con, query)[["session_data"]]
 }
 
+#' setSessionData
+#'
+#' @param con Connection to database.
+#' @param sessionKey Session key to set session data for.
+#' @param sessionData The session data to set.
+#'
+#' @return The session data.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' setSessionData(con, "123", "foo=bar")
+#' }
 setSessionData <- function(con, sessionKey, sessionData) {
   sql <- "UPDATE SESSION set session_data = ?sessionData
     where session_key = ?sessionKey;"
@@ -38,5 +63,6 @@ setSessionData <- function(con, sessionKey, sessionData) {
                                sessionData = sessionData)
   res <- DBI::dbSendQuery(con, query)
   DBI::dbClearResult(res)
-}
 
+  invisible(sessionData)
+}
