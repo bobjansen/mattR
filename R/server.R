@@ -20,6 +20,10 @@ buildApp <- function(config) {
       }
 
       resp <- getResponse(setupResponse(request), request)
+      if (!"status" %in% names(resp) || is.null(resp[["status"]])) {
+        warning("Response without status, adding status 200")
+        resp[["status"]] <- 200L
+      }
 
       if (debug) {
         print(paste("Response for", request[["REQUEST_METHOD"]],
