@@ -1,8 +1,23 @@
 sessionMiddleware <- function(resp, req) {
   resp[["_cookies"]] <- list()
-  for (cookiePair in trimws(strsplit(req[["HTTP_COOKIE"]], ";")[[1]])) {
-    parts <- strsplit(cookiePair, "=")[[1]]
-    resp[["_cookies"]][[parts[[1]]]] <- parts[[2]]
+
+  if (!is.null(req[["HTTP_COOKIE"]])) {
+    for (cookiePair in trimws(strsplit(req[["HTTP_COOKIE"]], ";")[[1]])) {
+      parts <- strsplit(cookiePair, "=")[[1]]
+      if (length(parts) == 2) {
+        resp[["_cookies"]][[parts[[1]]]] <- parts[[2]]
+      }
+    }
+  }
+
+  if (!"sessionid" %in% names(resp[["_cookies"]])) {
+    sessionid = getRandomString(40)
+    resp[["headers"]][["Set-Cookie"]] <- paste("sessionid",
+                                               sessionid,
+                                               sep = "=")
+    storeSessionId(getConfigOrDefault(configure(),
+                                      "dbConnection", NULL),
+                   sessionid)
   }
 
   getResponse(resp, req)
