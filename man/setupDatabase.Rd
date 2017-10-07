@@ -4,7 +4,10 @@
 \alias{setupDatabase}
 \title{setupDatabase}
 \usage{
-setupDatabase()
+setupDatabase(dsn = ":memory:")
+}
+\arguments{
+\item{dsn}{DSN of the connection.}
 }
 \value{
 A connection to the database

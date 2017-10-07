@@ -2,34 +2,38 @@
 #'
 #' Create a connection to an in-memory SQLite database.
 #'
+#' @param dsn DSN of the connection.
 #' @return Connection to the database.
-#' @export
 #' @import DBI
 #' @import RSQLite
+#'
+#' @export
 #'
 #' @examples
 #' \dontrun{
 #' createConnection()
 #' }
-createConnection <- function() {
-  DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+createConnection <- function(dsn = ":memory:") {
+  DBI::dbConnect(RSQLite::SQLite(), dsn)
 }
 
 #' setupDatabase
 #'
 #' Setup a database with a simple USERS table.
 #'
+#' @param dsn DSN of the connection.
+#'
 #' @return A connection to the database
-#' @export
 #' @import DBI
+#' @export
 #'
 #' @examples
 #' \dontrun{
 #' setupDatabase()
 #' }
-setupDatabase <- function() {
-  con <- createConnection()
   sqlUsers <- "CREATE TABLE USERS (username TEXT primary key, password TEXT)"
+setupDatabase <- function(dsn = ":memory:") {
+  con <- createConnection(dsn)
   res <- DBI::dbSendQuery(con, sqlUsers)
   DBI::dbClearResult(res)
 

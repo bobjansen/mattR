@@ -4,7 +4,10 @@
 \alias{createConnection}
 \title{createConnection}
 \usage{
-createConnection()
+createConnection(dsn = ":memory:")
+}
+\arguments{
+\item{dsn}{DSN of the connection.}
 }
 \value{
 Connection to the database.
