@@ -126,12 +126,6 @@ Source: CRAN
 Version: 1.5
 Hash: 9c51936d8dd00b2f1d4fe9d10499694c
 
-Package: later
-Source: CRAN
-Version: 0.5
-Requires: BH, Rcpp, rlang
-Hash: bf51efc05b6d676b9e59335113caceee
-
 Package: lazyeval
 Source: CRAN
 Version: 0.2.0
