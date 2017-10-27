@@ -1,6 +1,6 @@
 packageConfig <- list(
   port = 8080,
-  debug = TRUE,
+  debug = FALSE,
   dbConnection = setupDatabase(),
   middlewares = c(
                   sessionMiddleware,

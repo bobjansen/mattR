@@ -1,5 +1,6 @@
 .pkgenv <- new.env(parent = emptyenv())
 
 onLoad <- function(libname, pkgname) {
-  .pkgenv[["handle"]] <- NULL
+  .pkgenv[["handle"]] <- NULL # nocov
 }
+

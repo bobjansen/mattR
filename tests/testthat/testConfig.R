@@ -1,11 +1,13 @@
 test_that("Configure returns a list", {
   config <- configure()
+  on.exit(DBI::dbDisconnect(config[["dbConnection"]]))
 
   expect_equal(class(config), "list")
 })
 
 test_that("Configure returns a list with port and debug", {
   config <- configure()
+  on.exit(DBI::dbDisconnect(config[["dbConnection"]]))
 
   expect_true("port" %in% names(config))
   expect_true("debug" %in% names(config))

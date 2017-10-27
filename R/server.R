@@ -14,9 +14,9 @@ buildApp <- function(config) {
 
   app <- list(
     call = function(request) {
-      if (debug) {
+      if (debug) { # nocov start
         print(paste(request[["REQUEST_METHOD"]], "request on URL:",
-                    request[["PATH_INFO"]]))
+                    request[["PATH_INFO"]])) # nocov end
       }
 
       resp <- getResponse(setupResponse(request), request)
@@ -25,18 +25,18 @@ buildApp <- function(config) {
         resp[["status"]] <- 200L
       }
 
-      if (debug) {
+      if (debug) { # nocov start
         print(paste("Response for", request[["REQUEST_METHOD"]],
                     "request on URL:", request[["PATH_INFO"]], "has status",
-                    resp[["status"]]))
+                    resp[["status"]])) # nocov end
       }
 
       resp
     },
-    onWSOpen = function(ws) {
+    onWSOpen = function(ws) { # nocov start
       ws$onMessage(function(binary, message) {
         ws$send(message)
-      })
+      }) # nocov end
     }
   )
 
@@ -57,7 +57,7 @@ runTestServer <- function(daemonized = FALSE) {
   config <- mattR::configure()
 
   if (mattR::getConfigOrDefault(config, "debug", FALSE)) {
-    cat("* debug is on.\n")
+    cat("* debug is on.\n") # nocov
   }
 
   cat("* R Version:",
@@ -74,9 +74,9 @@ runTestServer <- function(daemonized = FALSE) {
 
   if (daemonized) {
     .pkgenv[["handle"]] <- httpuv::startDaemonizedServer(host, port, app)
-  } else {
+  } else { # nocov start
     cat("Use Ctrl-C to stop\n")
-    httpuv::runServer(host, port, app)
+    httpuv::runServer(host, port, app) # nocov end
   }
 
   # Closing the handle twice using httpuv::stopDaemonizedServer will crash R.
@@ -119,7 +119,7 @@ getHandle <- function() {
 #' stopDaemonizedServer()
 #' }
 stopDaemonizedServer <- function() {
-  httpuv::stopDaemonizedServer(.pkgenv[["handle"]])
+  httpuv::stopDaemonizedServer(getHandle())
   # What to do when stopping fails?
   .pkgenv[["handle"]] <- NULL
   invisible()

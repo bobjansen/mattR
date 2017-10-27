@@ -126,11 +126,73 @@ test_that("Dynamic genericView returns a function creating response", {
                     QUERY_STRING = paste0("?Text=", responseText)))
 
   expect_true(is(resp, "response"))
-
   expect_true("body" %in% names(resp))
   expect_true(resp[["body"]] == responseText)
-
   expect_true("status" %in% names(resp))
   expect_true(resp[["status"]] == 200L)
 })
 
+test_that("Dynamic views with no params don't crash", {
+  responseText = "Hello World!"
+  view <- genericView(function(resp, req, params) {
+                        resp[["body"]] <- responseText
+                        resp[["status"]] <- 200L
+                        resp
+                     })
+
+  resp <- view(structure(list(), class = "response"),
+               list(REQUEST_METHOD = "GET"))
+
+  expect_true(is(resp, "response"))
+  expect_true("body" %in% names(resp))
+  expect_true(resp[["body"]] == responseText)
+  expect_true("status" %in% names(resp))
+  expect_true(resp[["status"]] == 200L)
+})
+
+test_that("Dynamic POST views with no params don't crash", {
+  responseText <- "Hello World!"
+  view <- genericView(function(resp, req, params) {
+                        resp[["body"]] <- responseText
+                        resp[["status"]] <- 200L
+                        resp
+                     })
+
+  resp <- view(structure(list(), class = "response"),
+               list(REQUEST_METHOD = "POST",
+                    rook.input = list(read_lines = function() "")))
+
+  expect_true(is(resp, "response"))
+  expect_true("body" %in% names(resp))
+  expect_true(resp[["body"]] == responseText)
+  expect_true("status" %in% names(resp))
+  expect_true(resp[["status"]] == 200L)
+})
+
+test_that("Dynamic POST views with params are handled", {
+  responseText <- "Hello World!"
+  view <- genericView(function(resp, req, params) {
+                        resp[["body"]] <- responseText
+                        resp[["status"]] <- 200L
+                        resp
+                     })
+
+  resp <- view(structure(list(), class = "response"),
+               list(REQUEST_METHOD = "POST",
+                    QUERY_STRING = paste0("?Text=", responseText),
+                    rook.input = list(read_lines = function() "")))
+
+
+  expect_true(is(resp, "response"))
+  expect_true("body" %in% names(resp))
+  expect_true(resp[["body"]] == responseText)
+  expect_true("status" %in% names(resp))
+  expect_true(resp[["status"]] == 200L)
+})
+
+test_that("Content-Type guessing works", {
+  expect_equal(guessContentTypeFromFilePath("index.html"), "text/html")
+  expect_equal(guessContentTypeFromFilePath("index.htm"), "text/html")
+  expect_equal(guessContentTypeFromFilePath("style.css"), "text/css")
+  expect_equal(guessContentTypeFromFilePath("foo"), "")
+})

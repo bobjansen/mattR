@@ -17,18 +17,18 @@ getRoutes <- function(debug = FALSE) {
   routes <- NULL
   routesPath <- file.path(getwd(), "routes.R")
   if (file.exists(routesPath)) {
-    source(routesPath, local = TRUE)
+    source(routesPath, local = TRUE) # nocov
   } else {
     source(system.file("defaults", "routes.R", package = "mattR"), local = TRUE)
   }
 
-  if (debug) {
-    cat(paste0("Path of the user routes file would be: ", routesPath, "\n"))
-    #print(routes)
+  if (debug) { # nocov start
+    cat(paste0("Path of the user routes file would be: ",
+               routesPath, "\n")) # nocov end
   }
 
   if (is.null(routes)) {
-    stop("The routes.R file should define a variable 'routes'.")
+    stop("The routes.R file should define a variable 'routes'.") # nocov
   }
   routes
 }

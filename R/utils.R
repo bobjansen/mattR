@@ -8,14 +8,16 @@
 #' @param file The file name
 #' @param contentType The content type
 #' @export
-fileUrl <- function(file, contentType='application/octet-stream') {
+fileUrl <- function(
+  file, contentType = 'application/octet-stream'
+) { # nocov start
 
-  bytes <- file.info(file)$size
+  bytes <- file.info(file)[["size"]]
   if (is.na(bytes)) {
     return()
   }
 
   fileData <- readBin(file, 'raw', n = bytes)
   b64 <- httpuv::rawToBase64(fileData)
-  paste0('data:', contentType, ';base64,', b64)
+  paste0('data:', contentType, ';base64,', b64) # nocov end
 }
