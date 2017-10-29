@@ -15,8 +15,8 @@ buildApp <- function(config) {
   app <- list(
     call = function(request) {
       if (debug) { # nocov start
-        print(paste(request[["REQUEST_METHOD"]], "request on URL:",
-                    request[["PATH_INFO"]])) # nocov end
+        message(paste(request[["REQUEST_METHOD"]], "request on URL:",
+                      request[["PATH_INFO"]])) # nocov end
       }
 
       resp <- getResponse(setupResponse(request), request)
@@ -26,9 +26,9 @@ buildApp <- function(config) {
       }
 
       if (debug) { # nocov start
-        print(paste("Response for", request[["REQUEST_METHOD"]],
-                    "request on URL:", request[["PATH_INFO"]], "has status",
-                    resp[["status"]])) # nocov end
+        message(paste("Response for", request[["REQUEST_METHOD"]],
+                      "request on URL:", request[["PATH_INFO"]], "has status",
+                      resp[["status"]])) # nocov end
       }
 
       resp
@@ -57,25 +57,25 @@ runTestServer <- function(daemonized = FALSE) {
   config <- mattR::configure()
 
   if (mattR::getConfigOrDefault(config, "debug", FALSE)) {
-    cat("* debug is on.\n") # nocov
+    message("* debug is on.\n") # nocov
   }
 
-  cat("* R Version:",
-      paste0(R.version[["major"]], ".", R.version[["minor"]]),
-      "\n")
+  message("* R Version:",
+          paste0(R.version[["major"]], ".", R.version[["minor"]]),
+          "\n")
 
   host <- "0.0.0.0"
   port <- as.numeric(mattR::getConfigOrDefault(config, "port",
                                                sample(1025:(2^16 - 1), 1)))
 
-  cat(paste0("* Listening on tcp://", host, ":", port, "\n"))
+  message(paste0("* Listening on tcp://", host, ":", port, "\n"))
 
   app <- buildApp(config)
 
   if (daemonized) {
     .pkgenv[["handle"]] <- httpuv::startDaemonizedServer(host, port, app)
   } else { # nocov start
-    cat("Use Ctrl-C to stop\n")
+    message("Use Ctrl-C to stop\n")
     httpuv::runServer(host, port, app) # nocov end
   }
 

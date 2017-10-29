@@ -22,8 +22,8 @@ test_that("Skeleton doesn't create a file in a non-empty dir", {
 
   # Check that creation works.
   skeleton(path = installDir)
-  functionOutput <- capture_output(didCreate <- skeleton(path = installDir))
+  functionOutput <- capture_messages(didCreate <- skeleton(path = installDir))
 
-  expect_equal(functionOutput, "The directory is not empty, exiting.")
+  expect_equal(functionOutput, "The directory is not empty, exiting.\n")
   expect_false(didCreate)
 })

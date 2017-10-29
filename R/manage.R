@@ -12,7 +12,7 @@ skeleton <- function(path = getwd()) {
   if (length(list.files(path)) +
       length(list.dirs(path, recursive = FALSE)) > 0
   ) {
-    cat("The directory is not empty, exiting.\n")
+    message("The directory is not empty, exiting.")
     FALSE
   } else {
     fromPath <- file.path(system.file(package = "mattR"), "skeleton")
@@ -42,6 +42,6 @@ helpMessage <- function(...) {
 #' usageMessage()
 #' }
 usageMessage <- function() {
-  cat("Start a server using './manage runServer'.\n") # nocov
+  message("Start a server using './manage runServer'.\n") # nocov
 }
 

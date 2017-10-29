@@ -23,8 +23,8 @@ getRoutes <- function(debug = FALSE) {
   }
 
   if (debug) { # nocov start
-    cat(paste0("Path of the user routes file would be: ",
-               routesPath, "\n")) # nocov end
+    message(paste0("Path of the user routes file would be: ",
+                   routesPath, "\n")) # nocov end
   }
 
   if (is.null(routes)) {

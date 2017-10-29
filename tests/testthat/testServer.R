@@ -9,7 +9,7 @@ test_that("Get works", {
     Sys.sleep(0.1)
   }
   if (!isMattRRunning()) {
-    warning("Server could not be started.")
+    warning("Server could not be started in one second.")
   }
 
   expect_equal(nonBlockingGet("localhost:8080/params"), "No params given")
