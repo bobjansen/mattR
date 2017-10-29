@@ -2,5 +2,6 @@
 
 onLoad <- function(libname, pkgname) {
   .pkgenv[["handle"]] <- NULL # nocov
+  .pkgenv[["exitHandlers"]] <- c()
 }
 

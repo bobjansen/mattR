@@ -77,11 +77,22 @@ runTestServer <- function(daemonized = FALSE) {
   } else { # nocov start
     message("Use Ctrl-C to stop\n")
     httpuv::runServer(host, port, app) # nocov end
+    on.exit(runExitHandlers())
   }
 
   # Closing the handle twice using httpuv::stopDaemonizedServer will crash R.
   # Therefore handle management is done by mattR and the handle is never returned.
   invisible()
+}
+
+addExitHandler <- function(FUN) {
+  .pkgenv[["exitHandlers"]] <- c(.pkgenv[["exitHandlers"]], FUN)
+}
+
+runExitHandlers <- function() {
+  for (handler in .pkgenv[["exitHandlers"]]) {
+    handler()
+  }
 }
 
 #' isMattRRunning
@@ -120,6 +131,7 @@ getHandle <- function() {
 #' }
 stopDaemonizedServer <- function() {
   httpuv::stopDaemonizedServer(getHandle())
+  runExitHandlers()
   # What to do when stopping fails?
   .pkgenv[["handle"]] <- NULL
   invisible()

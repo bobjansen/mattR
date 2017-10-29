@@ -33,6 +33,11 @@ createConnection <- function(dsn = ":memory:") {
 #' }
 setupDatabase <- function(dsn = ":memory:") {
   con <- createConnection(dsn)
+  addExitHandler(function () {
+    if (DBI::dbIsValid(con)) {
+      DBI::dbDisconnect(con)
+    }
+  })
   sqlUsers <- "CREATE TABLE IF NOT EXISTS 'USERS'
     (username TEXT primary key, password TEXT)"
   res <- DBI::dbSendQuery(con, sqlUsers)
