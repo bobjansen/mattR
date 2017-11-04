@@ -15,16 +15,18 @@
 #' checkUserCredentials(con, "foo", "42")
 #' }
 checkUserCredentials <- function(con, username, password) {
-  sql <- "SELECT password FROM USERS where username = ?username;"
+  sql <- "SELECT user_id, password FROM USERS where username = ?username;"
   query <- DBI::sqlInterpolate(con, sql, username = username)
-  hashedPass <- DBI::dbGetQuery(con, query)[["password"]]
+  res <- DBI::dbGetQuery(con, query)
+  hashedPass <- res[["password"]]
   if (length(hashedPass) == 0) {
     # scrypt::hashPassword("")
     hashedPass <- "c2NyeXB0ABAAAAAIAAAAAfLfQ+kvzWKSpI4modXxrBN6cGVo94VdMQHyeuW4b6Q5+ZvV1/TPzMVnbGf4EF7BDpkFrCuDTJm9XlSls/v6N1fOrSkRGQ4AkFSYHqYEjVro"
     scrypt::verifyPassword(hashedPass, password)
-    FALSE
+    NULL
   } else {
     scrypt::verifyPassword(hashedPass, password)
+    res[["user_id"]]
   }
 }
 

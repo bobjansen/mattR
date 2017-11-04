@@ -39,8 +39,15 @@ setupDatabase <- function(dsn = ":memory:") {
     }
   })
   sqlUsers <- "CREATE TABLE IF NOT EXISTS 'USERS'
-    (username TEXT primary key, password TEXT)"
+    (user_id integer primary key,
+     username TEXT,
+     password TEXT)"
+  sqlUserIndex <- 'CREATE INDEX IF NOT EXISTS
+    "mattR_users_username_unique_index" ON
+    "users" ("username")';
   res <- DBI::dbSendQuery(con, sqlUsers)
+  DBI::dbClearResult(res)
+  res <- DBI::dbSendQuery(con, sqlUserIndex)
   DBI::dbClearResult(res)
 
   # The table structure is taken from a standard Django install.

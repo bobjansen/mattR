@@ -24,14 +24,14 @@ test_that("Check valid user credentials work", {
   con <- setupDatabase()
   on.exit(DBI::dbDisconnect(con))
   createUser(con, "user", "42")
-  expect_true(checkUserCredentials(con, "user", "42"))
+  expect_equal(checkUserCredentials(con, "user", "42"), 1)
 })
 
 test_that("Check invalid user credentials don't work", {
   con <- setupDatabase()
   on.exit(DBI::dbDisconnect(con))
   createUser(con, "user", "42")
-  expect_false(checkUserCredentials(con, "user2", "42"))
+  expect_null(checkUserCredentials(con, "user2", "42"))
 })
 
 test_that("Check user exists checks work", {
