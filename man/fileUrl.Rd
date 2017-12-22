@@ -2,9 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{fileUrl}
 \alias{fileUrl}
-\title{fileUrl
-Return a URL for a file to be sent to the client. the file will be base64
-encoded and embedded in the URL.}
+\title{fileUrl}
 \usage{
 fileUrl(file, contentType = "application/octet-stream")
 }
@@ -14,6 +12,10 @@ fileUrl(file, contentType = "application/octet-stream")
 \item{contentType}{The content type}
 }
 \description{
+Return a URL for a file to be sent to the client. the file will be base64
+encoded and embedded in the URL.
+}
+\details{
 Taken from
 https://github.com/rstudio/shiny/blob/e30fac02eddbb7cd510d448e385c559c82009a24/R/shiny.R
 }

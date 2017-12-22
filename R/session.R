@@ -2,12 +2,8 @@ sessionMiddleware <- function(resp, req) {
   resp[["_cookies"]] <- list()
 
   if (!is.null(req[["HTTP_COOKIE"]])) {
-    for (cookiePair in trimws(strsplit(req[["HTTP_COOKIE"]], ";")[[1]])) {
-      parts <- strsplit(cookiePair, "=")[[1]]
-      if (length(parts) == 2) {
-        resp[["_cookies"]][[parts[[1]]]] <- parts[[2]]
-      }
-    }
+    resp[["_cookies"]] <- modifyList(resp[["_cookies"]],
+                                     parseCookie(req[["HTTP_COOKIE"]]))
   }
 
   if (!"sessionid" %in% names(resp[["_cookies"]])) {
@@ -49,11 +45,15 @@ storeSessionId <- function(con, sessionKey) {
 #' getSessionData(con, "123")
 #' }
 getSessionData <- function(con, sessionKey) {
-  sql <- "SELECT session_data FROM SESSION where session_key = ?sessionKey;"
-  query <- DBI::sqlInterpolate(con,
-                               sql,
-                               sessionKey = sessionKey)
-  DBI::dbGetQuery(con, query)[["session_data"]]
+  if (!is.null(sessionKey)) {
+    sql <- "SELECT session_data FROM SESSION where session_key = ?sessionKey;"
+    query <- DBI::sqlInterpolate(con,
+                                 sql,
+                                 sessionKey = sessionKey)
+    DBI::dbGetQuery(con, query)[["session_data"]]
+  } else {
+    NULL
+  }
 }
 
 #' setSessionData
@@ -76,8 +76,14 @@ setSessionData <- function(con, sessionKey, sessionData) {
                                sql,
                                sessionKey = sessionKey,
                                sessionData = sessionData)
-  res <- DBI::dbSendQuery(con, query)
-  DBI::dbClearResult(res)
+  rows_affected <- DBI::dbExecute(con, query)
 
-  invisible(sessionData)
+  if (rows_affected == 1) {
+    invisible(sessionData)
+  } else if (rows_affected > 1) {
+    stop("Duplicate session keys?")
+  } else {
+    warning("No session key found, did you forget to call storeSessionId()?")
+  }
 }
+

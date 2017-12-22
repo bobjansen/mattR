@@ -41,3 +41,25 @@ test_that("Check user exists checks work", {
   expect_true(existsUser(con, "user"))
   expect_false(existsUser(con, "user2"))
 })
+
+test_that("Check wrong password doesn't work", {
+  con <- setupDatabase()
+  on.exit(DBI::dbDisconnect(con))
+  createUser(con, "user", "42")
+  expect_null(checkUserCredentials(con, "user", "56"))
+})
+
+test_that("Check empty username doesn't work", {
+  con <- setupDatabase()
+  on.exit(DBI::dbDisconnect(con))
+  createUser(con, "user", "42")
+  expect_null(checkUserCredentials(con, NULL, "42"))
+})
+
+test_that("Check invalid user credentials don't work", {
+  con <- setupDatabase()
+  on.exit(DBI::dbDisconnect(con))
+  createUser(con, "user", "42")
+  expect_null(checkUserCredentials(con, "user", NULL))
+})
+
