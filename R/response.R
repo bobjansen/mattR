@@ -8,7 +8,7 @@ response <- function(body = NULL, statusCode = NULL, contentType = '') {
   )
 }
 
-notFoundResponse <- function() {
+notFoundResponse <- function(message = "") {
   structure(
     list(
       status = 404L,
@@ -17,7 +17,25 @@ notFoundResponse <- function() {
       ),
       body = paste(
         sep = "\r\n",
-        "404 Page Not Found"
+        "404 Page Not Found",
+        message
+      )
+    ),
+    class = "response"
+  )
+}
+
+errorResponse <- function(message = "") {
+  structure(
+    list(
+      status = 500L,
+      headers = list(
+        'Content-Type' = 'text/plain'
+      ),
+      body = paste(
+        sep = "\r\n",
+        "500 Internal server error",
+        message
       )
     ),
     class = "response"

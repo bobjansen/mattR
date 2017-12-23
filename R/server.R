@@ -9,7 +9,6 @@
 #' buildApp()
 #' }
 buildApp <- function(config) {
-
   debug <- getConfigOrDefault(config, "debug", FALSE)
 
   app <- list(
@@ -19,7 +18,11 @@ buildApp <- function(config) {
                       request[["PATH_INFO"]])) # nocov end
       }
 
-      resp <- getResponse(setupResponse(request), request)
+      resp <- tryCatch(
+        getResponse(setupResponse(request), request),
+        error = function(e) {
+          errorResponse(e[["message"]])
+      })
       if (!"status" %in% names(resp) || is.null(resp[["status"]])) {
         warning("Response without status, adding status 200")
         resp[["status"]] <- 200L
@@ -81,7 +84,8 @@ runTestServer <- function(daemonized = FALSE) {
   }
 
   # Closing the handle twice using httpuv::stopDaemonizedServer will crash R.
-  # Therefore handle management is done by mattR and the handle is never returned.
+  # Therefore handle management is done by mattR and the handle is never
+  # returned.
   invisible()
 }
 
