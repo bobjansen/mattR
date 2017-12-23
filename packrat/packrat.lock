@@ -210,7 +210,7 @@ Hash: 226d56d7469587da40b0f96180e711b4
 
 Package: stringi
 Source: CRAN
-Version: 1.1.5
+Version: 1.1.6
 
 Package: stringr
 Source: CRAN
