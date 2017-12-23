@@ -1,6 +1,6 @@
 response <- function(body = NULL, statusCode = NULL, contentType = '') {
   structure(
-    # Rook requires taht Content-Type is set.
+    # Rook requires that Content-Type is set.
     list(body = body,
          headers = list('Content-Type' = contentType),
          status = statusCode),

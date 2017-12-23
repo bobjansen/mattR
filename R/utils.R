@@ -1,4 +1,5 @@
 #' fileUrl
+#'
 #' Return a URL for a file to be sent to the client. the file will be base64
 #' encoded and embedded in the URL.
 #'
@@ -11,7 +12,6 @@
 fileUrl <- function(
   file, contentType = 'application/octet-stream'
 ) { # nocov start
-
   bytes <- file.info(file)[["size"]]
   if (is.na(bytes)) {
     return()
