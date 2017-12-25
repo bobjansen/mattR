@@ -52,7 +52,7 @@ staticView <- function(staticDir, urlPath) {
       resp[["status"]] <- 200L
       resp
     } else {
-      NULL
+      notFoundResponse(paste("File", fileName, "not found."))
     }
   }
 }
@@ -95,7 +95,7 @@ genericView <- function(FUN) {
 #'
 #' @param templateFile Filepath of a whisker template
 #' @param data named list or environment with variables that will be used during
-#'  rendering
+#' rendering
 #'
 #' @return A response object with as body the rendered template
 #' @export

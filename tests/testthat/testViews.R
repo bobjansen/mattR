@@ -67,7 +67,7 @@ test_that("Static View returns NULL when the file doesn't exist.", {
                      "static")
   resp <- view(NULL, request)
 
-  expect_equal(resp, NULL)
+  expect_equal(resp[['status']], 404L)
 })
 
 test_that("Template View stops on missing template", {
