@@ -11,6 +11,13 @@
 buildApp <- function(config) {
   debug <- getConfigOrDefault(config, "debug", FALSE)
 
+  initPath <- file.path(getwd(), "init.R")
+  if (file.exists(initPath)) {
+    source(initPath, local = FALSE) # nocov
+  } else {
+    source(system.file("defaults", "init.R", package = "mattR"), local = FALSE)
+  }
+
   app <- list(
     call = function(request) {
       if (debug) { # nocov start
@@ -64,8 +71,8 @@ runTestServer <- function(daemonized = FALSE) {
   }
 
   message("* R Version:",
-          paste0(R.version[["major"]], ".", R.version[["minor"]]),
-          "\n")
+          paste0(R.version[["major"]], ".", R.version[["minor"]]), "\n",
+          "* Started at ", Sys.time(), "\n")
 
   host <- "0.0.0.0"
   port <- as.numeric(mattR::getConfigOrDefault(config, "port",
