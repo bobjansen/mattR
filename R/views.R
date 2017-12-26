@@ -1,16 +1,15 @@
-#' Guess the Content-Type for a file or filepath.
+#' Guess the Content-Type for a file or filepath
 #'
 #' @param filepath Filepath of which to guess the Content-Type.
 #'
 #' @return The guess of the Content-Type
 guessContentTypeFromFilePath <- function(filepath) {
-  if (endsWith(filepath, 'html') ||
-      endsWith(filepath, 'htm')) {
-      'text/html'
-    } else if (endsWith(filepath, 'css')) {
-      'text/css'
-    } else {
-      ''
+  if (endsWith(filepath, 'html') || endsWith(filepath, 'htm')) {
+    'text/html'
+  } else if (endsWith(filepath, 'css')) {
+    'text/css'
+  } else {
+    ''
   }
 }
 

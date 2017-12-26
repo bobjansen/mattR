@@ -8,7 +8,7 @@ matchRoutes <- function(routes, resp, req) {
       return(route[[2]](resp, req))
     }
   }
-  notFoundResponse()
+  notFoundResponse("Unknown URL")
 }
 
 getRoutes <- function(debug = FALSE) {
