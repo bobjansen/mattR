@@ -39,6 +39,9 @@ staticView <- function(staticDir, urlPath) {
 
     if (staticResourceSubPath == "") {
       staticResourceSubPath <- "index.html"
+      if (!file.exists(file.path(staticDir, staticResourceSubPath))) {
+        staticResourceSubPath <- "index.htm"
+      }
     }
     fileName <- file.path(staticDir, staticResourceSubPath)
 
