@@ -2,7 +2,7 @@
 % Please edit documentation in R/views.R
 \name{guessContentTypeFromFilePath}
 \alias{guessContentTypeFromFilePath}
-\title{Guess the Content-Type for a file or filepath.}
+\title{Guess the Content-Type for a file or filepath}
 \usage{
 guessContentTypeFromFilePath(filepath)
 }
@@ -13,5 +13,5 @@ guessContentTypeFromFilePath(filepath)
 The guess of the Content-Type
 }
 \description{
-Guess the Content-Type for a file or filepath.
+Guess the Content-Type for a file or filepath
 }
