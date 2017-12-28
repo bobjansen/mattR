@@ -4,10 +4,12 @@
 \alias{setupResponse}
 \title{Set up response}
 \usage{
-setupResponse(req)
+setupResponse(req, routes)
 }
 \arguments{
 \item{req}{The request triggering the response setup.}
+
+\item{routes}{The configured routes.}
 }
 \value{
 An empty request with middlewares attached.

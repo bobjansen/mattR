@@ -11,7 +11,7 @@ matchRoutes <- function(routes, resp, req) {
   notFoundResponse("Unknown URL")
 }
 
-getRoutes <- function(debug = FALSE) {
+getRoutesFromFile <- function(debug = FALSE) {
   # The file specified by routesPath should create a `routes` variable.
   # Defining beforehand prevents a note being issued by `R CMD check`.
   routes <- NULL
@@ -23,8 +23,8 @@ getRoutes <- function(debug = FALSE) {
   }
 
   if (debug) { # nocov start
-    message(paste0("Path of the user routes file would be: ",
-                   routesPath, "\n")) # nocov end
+    message(paste("Path of the user routes file would be:",
+                   routesPath)) # nocov end
   }
 
   if (is.null(routes)) {

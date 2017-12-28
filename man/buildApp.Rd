@@ -2,18 +2,25 @@
 % Please edit documentation in R/server.R
 \name{buildApp}
 \alias{buildApp}
-\title{Build a mattR app object for serving by httpuv}
+\title{buildApp}
 \usage{
-buildApp(config)
+buildApp(config, routes, appState = new.env())
 }
 \arguments{
-\item{config}{List containing the configuration for this server}
+\item{config}{List containing the configuration for this app.}
+
+\item{routes}{The routes used in this app.}
+
+\item{appState}{The initial state of the app.}
 }
 \value{
 The app object
 }
 \description{
 Build a mattR app object for serving by httpuv
+}
+\details{
+This will set the variable in the appState environment if it is not set.
 }
 \examples{
 \dontrun{

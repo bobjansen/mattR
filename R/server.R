@@ -1,6 +1,12 @@
+#' buildApp
+#'
 #' Build a mattR app object for serving by httpuv
 #'
-#' @param config List containing the configuration for this server
+#' This will set the variable in the appState environment if it is not set.
+#'
+#' @param config List containing the configuration for this app.
+#' @param routes The routes used in this app.
+#' @param appState The initial state of the app.
 #' @return The app object
 #' @export
 #'
@@ -8,25 +14,20 @@
 #' \dontrun{
 #' buildApp()
 #' }
-buildApp <- function(config) {
-  debug <- getConfigOrDefault(config, "debug", FALSE)
-
-  initPath <- file.path(getwd(), "init.R")
-  if (file.exists(initPath)) {
-    source(initPath, local = FALSE) # nocov
-  } else {
-    source(system.file("defaults", "init.R", package = "mattR"), local = FALSE)
+buildApp <- function(config, routes, appState = new.env()) {
+  if (!"debug" %in% names(appState)) {
+    appState[["debug"]] <- getConfigOrDefault(config, "debug", FALSE)
   }
 
   app <- list(
     call = function(request) {
-      if (debug) { # nocov start
+      if (appState[["debug"]]) { # nocov start
         message(paste(request[["REQUEST_METHOD"]], "request on URL:",
                       request[["PATH_INFO"]])) # nocov end
       }
 
       resp <- tryCatch(
-        getResponse(setupResponse(request), request),
+        getResponse(setupResponse(request, routes), request),
         error = function(e) {
           errorResponse(e[["message"]])
       })
@@ -35,7 +36,7 @@ buildApp <- function(config) {
         resp[["status"]] <- 200L
       }
 
-      if (debug) { # nocov start
+      if (appState[["debug"]]) { # nocov start
         message(paste("Response for", request[["REQUEST_METHOD"]],
                       "request on URL:", request[["PATH_INFO"]], "has status",
                       resp[["status"]])) # nocov end
@@ -53,6 +54,16 @@ buildApp <- function(config) {
   app
 }
 
+banner <- function(debug, host, port) {
+  if (debug) {
+    message("* debug is on.\n") # nocov
+  }
+  message("* R Version:",
+          paste0(R.version[["major"]], ".", R.version[["minor"]]), "\n",
+          "* Started at ", Sys.time(), "\n")
+  message(paste0("* Listening on tcp://", host, ":", port, "\n"))
+}
+
 #' Run a server for testing mattR apps
 #'
 #' @param daemonized Whether to start the server daemonized.
@@ -65,34 +76,45 @@ buildApp <- function(config) {
 #' }
 runTestServer <- function(daemonized = FALSE) {
   config <- mattR::configure()
-
-  if (mattR::getConfigOrDefault(config, "debug", FALSE)) {
-    message("* debug is on.\n") # nocov
-  }
-
-  message("* R Version:",
-          paste0(R.version[["major"]], ".", R.version[["minor"]]), "\n",
-          "* Started at ", Sys.time(), "\n")
+  debug <- getConfigOrDefault(config, "debug", FALSE)
 
   host <- "0.0.0.0"
   port <- as.numeric(mattR::getConfigOrDefault(config, "port",
                                                sample(1025:(2^16 - 1), 1)))
 
-  message(paste0("* Listening on tcp://", host, ":", port, "\n"))
+  routes <- getRoutesFromFile(debug)
+  appState <- initFromFile(debug)
+  app <- buildApp(config, routes, appState)
 
-  app <- buildApp(config)
+  startTestServer(app, host, port, daemonized, debug)
+}
 
+#' startTestServer
+#'
+#' Run a test server based on the given settings.
+#'
+#' @param app A rook app.
+#' @param host The host to bind on.
+#' @param port The port to listen on.
+#' @param daemonized Whether to start the server daemonized.
+#' @param debug Whether debug is activated.
+#' @export
+startTestServer <- function(
+  app, host, port,
+  daemonized = FALSE, debug = FALSE
+) {
+  banner(debug, host, port)
+  # Closing the handle twice using httpuv::stopDaemonizedServer will crash R.
+  # Therefore handle management is not entrusted to the user and done by mattR
+  # and the handle is never returned.
   if (daemonized) {
     .pkgenv[["handle"]] <- httpuv::startDaemonizedServer(host, port, app)
+
   } else { # nocov start
     message("Use Ctrl-C to stop\n")
     httpuv::runServer(host, port, app) # nocov end
     on.exit(runExitHandlers())
   }
-
-  # Closing the handle twice using httpuv::stopDaemonizedServer will crash R.
-  # Therefore handle management is done by mattR and the handle is never
-  # returned.
   invisible()
 }
 

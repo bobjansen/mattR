@@ -47,23 +47,18 @@ errorResponse <- function(message = "") {
 #' Set up an empty response to be handled by the attached middlewares.
 #'
 #' @param req The request triggering the response setup.
+#' @param routes The configured routes.
 #'
 #' @return An empty request with middlewares attached.
-setupResponse <- function(req) {
+setupResponse <- function(req, routes) {
   config <- configure()
-
   resp <- response()
   resp[["_middlewares"]] <- config[["middlewares"]]
   resp[["_middlewares_index"]] <- 0L
-
-  debug <- getConfigOrDefault(config, "debug", FALSE)
-  routes <- getRoutes(debug)
-
   resp[["_middlewares"]] <- c(resp[["_middlewares"]],
                               function(resp, req) {
                                 matchRoutes(routes, resp, req)
                               })
-
   resp
 }
 
