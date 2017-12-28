@@ -1,3 +1,11 @@
+#' sessionMiddleware
+#'
+#' Read the cookie and create a session id.
+#'
+#' @param resp The response that is being build.
+#' @param req The request.
+#'
+#' @export
 sessionMiddleware <- function(resp, req) {
   resp[["_cookies"]] <- list()
 
