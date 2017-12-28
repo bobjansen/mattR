@@ -78,7 +78,7 @@ runTestServer <- function(daemonized = FALSE) {
   config <- mattR::configure()
   debug <- getConfigOrDefault(config, "debug", FALSE)
 
-  host <- "0.0.0.0"
+  host <- mattR::getConfigOrDefault(config, "host", "0.0.0.0")
   port <- as.numeric(mattR::getConfigOrDefault(config, "port",
                                                sample(1025:(2^16 - 1), 1)))
 
