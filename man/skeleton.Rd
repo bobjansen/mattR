@@ -17,6 +17,6 @@ Create a skeleton for the app
 }
 \examples{
 \dontrun{
-buildApp()
+skeleton()
 }
 }

@@ -6,7 +6,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' buildApp()
+#' skeleton()
 #' }
 skeleton <- function(path = getwd()) {
   if (length(list.files(path)) +
