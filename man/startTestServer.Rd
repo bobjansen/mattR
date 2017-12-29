@@ -4,7 +4,8 @@
 \alias{startTestServer}
 \title{startTestServer}
 \usage{
-startTestServer(app, host, port, daemonized = FALSE, debug = FALSE)
+startTestServer(app, host = "0.0.0.0", port = 8080L, daemonized = FALSE,
+  debug = FALSE)
 }
 \arguments{
 \item{app}{A rook app.}

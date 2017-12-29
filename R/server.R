@@ -100,7 +100,8 @@ runTestServer <- function(daemonized = FALSE) {
 #' @param debug Whether debug is activated.
 #' @export
 startTestServer <- function(
-  app, host, port,
+  app,
+  host = "0.0.0.0", port = 8080L,
   daemonized = FALSE, debug = FALSE
 ) {
   banner(debug, host, port)
