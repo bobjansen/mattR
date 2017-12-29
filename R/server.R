@@ -19,6 +19,8 @@ buildApp <- function(routes, appState = new.env()) {
     appState[["debug"]] <- FALSE
   }
 
+  attach(pos = 2, appState, name = "mattR_appState")
+
   app <- list(
     call = function(request) {
       if (appState[["debug"]]) { # nocov start
