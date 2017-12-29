@@ -58,10 +58,10 @@ banner <- function(debug, host, port) {
   if (debug) {
     message("* debug is on.\n") # nocov
   }
-  message("* R Version:",
+  message("* R Version: ",
           paste0(R.version[["major"]], ".", R.version[["minor"]]), "\n",
-          "* Started at ", Sys.time(), "\n")
-  message(paste0("* Listening on tcp://", host, ":", port, "\n"))
+          "* Started at ", Sys.time())
+  message(paste0("* Listening on tcp://", host, ":", port))
 }
 
 #' Run a server for testing mattR apps
