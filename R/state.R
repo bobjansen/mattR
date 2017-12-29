@@ -1,19 +1,23 @@
-initFromFile <- function(debug = FALSE) {
-  appState <- NULL
+initFromFile <- function(config) {
+  appState <- new.env()
+
   initPath <- file.path(getwd(), "init.R")
   if (file.exists(initPath)) {
-    source(initPath, local = TRUE) # nocov
+    sys.source(initPath, envir = appState) # nocov
     if (is.null(appState)) {
       stop("The init.R script didn't create an appState variable.")
     }
   } else {
-    source(system.file("defaults", "init.R", package = "mattR"), local = TRUE)
+    sys.source(system.file("defaults", "init.R", package = "mattR"),
+               envir = appState)
     if (is.null(appState)) {
       stop("The default init.R script didn't create an appState variable.")
     }
   }
 
-  if (debug) { # nocov start
+  appState[["debug"]] <- getConfigOrDefault(config, "debug", FALSE)
+
+  if (appState[["debug"]]) { # nocov start
     message(paste("Path of the user init file would be:",
                   initPath)) # nocov end
   }

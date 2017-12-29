@@ -14,9 +14,9 @@
 #' \dontrun{
 #' buildApp()
 #' }
-buildApp <- function(config, routes, appState = new.env()) {
+buildApp <- function(routes, appState = new.env()) {
   if (!"debug" %in% names(appState)) {
-    appState[["debug"]] <- getConfigOrDefault(config, "debug", FALSE)
+    appState[["debug"]] <- FALSE
   }
 
   app <- list(
@@ -82,11 +82,11 @@ runTestServer <- function(daemonized = FALSE) {
   port <- as.numeric(mattR::getConfigOrDefault(config, "port",
                                                sample(1025:(2^16 - 1), 1)))
 
-  routes <- getRoutesFromFile(debug)
-  appState <- initFromFile(debug)
-  app <- buildApp(config, routes, appState)
+  appState <- initFromFile(config)
+  routes <- getRoutesFromFile(appState)
+  app <- buildApp(routes, appState)
 
-  startTestServer(app, host, port, daemonized, debug)
+  startTestServer(app, host, port, daemonized, appState[["debug"]])
 }
 
 #' startTestServer

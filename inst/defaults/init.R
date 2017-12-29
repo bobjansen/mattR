@@ -1,2 +1,1 @@
-appState <- new.env()
 
