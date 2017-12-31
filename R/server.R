@@ -6,6 +6,7 @@
 #'
 #' @param config List containing the configuration for this app.
 #' @param routes The routes used in this app.
+#' @param modules List of optional modules.
 #' @param appState The initial state of the app.
 #' @return The app object
 #' @export
@@ -14,7 +15,7 @@
 #' \dontrun{
 #' buildApp()
 #' }
-buildApp <- function(routes, appState = new.env()) {
+buildApp <- function(routes, modules = c(), appState = new.env()) {
   if (!"mattR_debug" %in% names(appState)) {
     appState[["mattR_debug"]] <- FALSE
   }
@@ -22,7 +23,9 @@ buildApp <- function(routes, appState = new.env()) {
   attach(appState, pos = 2, name = "mattR_appState")
   on.exit(detach("mattR_appState"))
 
-  attach(pos = 2, appState, name = "mattR_appState")
+  for (module in modules) {
+    routes <- module(routes)
+  }
 
   app <- list(
     call = function(request) {
@@ -82,6 +85,7 @@ banner <- function(host, port) {
 runTestServer <- function(daemonized = FALSE) {
   config <- mattR::configure()
   debug <- getConfigOrDefault(config, "debug", FALSE)
+  modules <- getConfigOrDefault(config, "modules", c())
 
   host <- mattR::getConfigOrDefault(config, "host", "0.0.0.0")
   port <- as.numeric(mattR::getConfigOrDefault(config, "port",
@@ -89,9 +93,9 @@ runTestServer <- function(daemonized = FALSE) {
 
   appState <- initFromFile(config)
   routes <- getRoutesFromFile(appState)
-  app <- buildApp(routes, appState)
+  app <- buildApp(routes, modules, appState)
 
-  startTestServer(app, host, port, daemonized, appState[["debug"]])
+  startTestServer(app, appState, host, port, daemonized)
 }
 
 #' startTestServer

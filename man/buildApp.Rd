@@ -4,14 +4,16 @@
 \alias{buildApp}
 \title{buildApp}
 \usage{
-buildApp(config, routes, appState = new.env())
+buildApp(routes, modules = c(), appState = new.env())
 }
 \arguments{
-\item{config}{List containing the configuration for this app.}
-
 \item{routes}{The routes used in this app.}
 
+\item{modules}{List of optional modules.}
+
 \item{appState}{The initial state of the app.}
+
+\item{config}{List containing the configuration for this app.}
 }
 \value{
 The app object
