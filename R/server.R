@@ -82,16 +82,15 @@ banner <- function(host, port) {
 #' \dontrun{
 #' runTestServer()
 #' }
-runTestServer <- function(daemonized = FALSE) {
+runTestServer <- function(daemonized = FALSE, debug = NULL) {
   config <- mattR::configure()
-  debug <- getConfigOrDefault(config, "debug", FALSE)
   modules <- getConfigOrDefault(config, "modules", c())
 
   host <- mattR::getConfigOrDefault(config, "host", "0.0.0.0")
   port <- as.numeric(mattR::getConfigOrDefault(config, "port",
                                                sample(1025:(2^16 - 1), 1)))
 
-  appState <- initFromFile(config)
+  appState <- initFromFile(config, debug)
   routes <- getRoutesFromFile(appState)
   app <- buildApp(routes, modules, appState)
 

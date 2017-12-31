@@ -1,4 +1,4 @@
-initFromFile <- function(config) {
+initFromFile <- function(config, debug = NULL) {
   appState <- new.env()
 
   initPath <- file.path(getwd(), "init.R")
@@ -15,7 +15,11 @@ initFromFile <- function(config) {
     }
   }
 
-  appState[["mattR_debug"]] <- getConfigOrDefault(config, "debug", FALSE)
+  appState[["mattR_debug"]] <- if (is.null(debug)) {
+    getConfigOrDefault(config, "debug", FALSE)
+  } else {
+    debug
+  }
 
   if (appState[["mattR_debug"]]) { # nocov start
     message(paste("Path of the user init file would be:",
