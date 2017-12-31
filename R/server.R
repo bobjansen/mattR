@@ -15,15 +15,18 @@
 #' buildApp()
 #' }
 buildApp <- function(routes, appState = new.env()) {
-  if (!"debug" %in% names(appState)) {
-    appState[["debug"]] <- FALSE
+  if (!"mattR_debug" %in% names(appState)) {
+    appState[["mattR_debug"]] <- FALSE
   }
+  # Attaching makes a _copy_ of appState.
+  attach(appState, pos = 2, name = "mattR_appState")
+  on.exit(detach("mattR_appState"))
 
   attach(pos = 2, appState, name = "mattR_appState")
 
   app <- list(
     call = function(request) {
-      if (appState[["debug"]]) { # nocov start
+      if (mattR_debug) { # nocov start
         message(paste(request[["REQUEST_METHOD"]], "request on URL:",
                       request[["PATH_INFO"]])) # nocov end
       }
@@ -38,7 +41,7 @@ buildApp <- function(routes, appState = new.env()) {
         resp[["status"]] <- 200L
       }
 
-      if (appState[["debug"]]) { # nocov start
+      if (mattR_debug) { # nocov start
         message(paste("Response for", request[["REQUEST_METHOD"]],
                       "request on URL:", request[["PATH_INFO"]], "has status",
                       resp[["status"]])) # nocov end
@@ -56,8 +59,8 @@ buildApp <- function(routes, appState = new.env()) {
   app
 }
 
-banner <- function(debug, host, port) {
-  if (debug) {
+banner <- function(host, port) {
+  if (mattR_debug) {
     message("* debug is on.\n") # nocov
   }
   message("* R Version: ",
@@ -99,14 +102,20 @@ runTestServer <- function(daemonized = FALSE) {
 #' @param host The host to bind on.
 #' @param port The port to listen on.
 #' @param daemonized Whether to start the server daemonized.
-#' @param debug Whether debug is activated.
 #' @export
 startTestServer <- function(
-  app,
+  app, appState = new.env(),
   host = "0.0.0.0", port = 8080L,
-  daemonized = FALSE, debug = FALSE
+  daemonized = FALSE
 ) {
-  banner(debug, host, port)
+  if (!"mattR_debug" %in% names(appState)) {
+    appState[["mattR_debug"]] <- FALSE
+  }
+  # Attaching makes a _copy_ of appState.
+  attach(appState, pos = 2, name = "mattR_appState")
+  on.exit(detach("mattR_appState"))
+
+  banner(host, port)
   # Closing the handle twice using httpuv::stopDaemonizedServer will crash R.
   # Therefore handle management is not entrusted to the user and done by mattR
   # and the handle is never returned.
