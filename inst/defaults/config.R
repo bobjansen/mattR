@@ -9,5 +9,6 @@ packageConfig <- list(
                     resp <- getResponse(resp, req)
                     resp[["headers"]][["X-SERVER"]] <- "mattR"
                     resp
-                  })
+                  }),
+  modules = c(mattR_admin)
 )

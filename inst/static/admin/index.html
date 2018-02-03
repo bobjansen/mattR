@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>mattR</title>
+     <link rel="stylesheet" type="text/css" href="/static/admin/style.css">
+  </head>
+  <body>
+    <h1>{{title}}</h1>
+    <h2>{{text}}</h2>
+    <ul>
+        {{#tables}}
+        <li><a href="/admin/edit?table={{.}}">{{.}}</a></li>
+        {{/tables}}
+    </ul>
+  </body>
+</html>
