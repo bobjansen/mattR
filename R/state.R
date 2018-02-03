@@ -1,6 +1,8 @@
 initFromFile <- function(config, debug = NULL) {
   appState <- new.env()
 
+  appState[["config"]] <- config
+
   initPath <- file.path(getwd(), "init.R")
   if (file.exists(initPath)) {
     sys.source(initPath, envir = appState) # nocov

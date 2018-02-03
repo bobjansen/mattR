@@ -64,3 +64,4 @@ setupDatabase <- function(dsn = ":memory:") {
   DBI::dbClearResult(res)
   con
 }
+
