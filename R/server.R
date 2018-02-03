@@ -4,7 +4,6 @@
 #'
 #' This will set the variable in the appState environment if it is not set.
 #'
-#' @param config List containing the configuration for this app.
 #' @param routes The routes used in this app.
 #' @param modules List of optional modules.
 #' @param appState The initial state of the app.
@@ -19,50 +18,52 @@ buildApp <- function(routes, modules = c(), appState = new.env()) {
   if (!"mattR_debug" %in% names(appState)) {
     appState[["mattR_debug"]] <- FALSE
   }
-  # Attaching makes a _copy_ of appState.
-  attach(appState, pos = 2, name = "mattR_appState")
-  on.exit(detach("mattR_appState"))
 
-  for (module in modules) {
-    routes <- module(routes)
-  }
+  appState[["modules"]] <- modules
+  appState[["routes"]] <- routes
 
-  app <- list(
-    call = function(request) {
-      if (mattR_debug) { # nocov start
-        message(paste(request[["REQUEST_METHOD"]], "request on URL:",
-                      request[["PATH_INFO"]])) # nocov end
-      }
-
-      resp <- tryCatch(
-        getResponse(setupResponse(request, routes), request),
-        error = function(e) {
-          errorResponse(e[["message"]])
-      })
-      if (!"status" %in% names(resp) || is.null(resp[["status"]])) {
-        warning("Response without status, adding status 200")
-        resp[["status"]] <- 200L
-      }
-
-      if (mattR_debug) { # nocov start
-        message(paste("Response for", request[["REQUEST_METHOD"]],
-                      "request on URL:", request[["PATH_INFO"]], "has status",
-                      resp[["status"]])) # nocov end
-      }
-
-      resp
-    },
-    onWSOpen = function(ws) { # nocov start
-      ws$onMessage(function(binary, message) {
-        ws$send(message)
-      }) # nocov end
+  with(appState, {
+    for (module in modules) {
+      routes <- module(routes, appState)
     }
-  )
 
-  app
+    app <- list(
+      call = function(request) {
+        if (mattR_debug) { # nocov start
+          message(paste(request[["REQUEST_METHOD"]], "request on URL:",
+                        request[["PATH_INFO"]])) # nocov end
+        }
+
+        resp <- tryCatch(
+          getResponse(setupResponse(request, routes), request),
+          error = function(e) {
+            errorResponse(e[["message"]])
+        })
+        if (!"status" %in% names(resp) || is.null(resp[["status"]])) {
+          warning("Response without status, adding status 200")
+          resp[["status"]] <- 200L
+        }
+
+        if (mattR_debug) { # nocov start
+          message(paste("Response for", request[["REQUEST_METHOD"]],
+                        "request on URL:", request[["PATH_INFO"]], "has status",
+                        resp[["status"]])) # nocov end
+        }
+
+        resp
+      },
+      onWSOpen = function(ws) { # nocov start
+        ws$onMessage(function(binary, message) {
+          ws$send(message)
+        }) # nocov end
+      }
+    )
+
+    app
+  })
 }
 
-banner <- function(host, port) {
+banner <- function(host, port, mattR_debug = FALSE) {
   if (mattR_debug) {
     message("* debug is on.\n") # nocov
   }
@@ -75,6 +76,7 @@ banner <- function(host, port) {
 #' Run a server for testing mattR apps
 #'
 #' @param daemonized Whether to start the server daemonized.
+#' @param debug Whether to run in debug mode.
 #' @return The httpuv handle to the server process.
 #' @export
 #'
@@ -84,7 +86,6 @@ banner <- function(host, port) {
 #' }
 runTestServer <- function(daemonized = FALSE, debug = NULL) {
   config <- mattR::configure()
-  modules <- getConfigOrDefault(config, "modules", c())
 
   host <- mattR::getConfigOrDefault(config, "host", "0.0.0.0")
   port <- as.numeric(mattR::getConfigOrDefault(config, "port",
@@ -92,7 +93,7 @@ runTestServer <- function(daemonized = FALSE, debug = NULL) {
 
   appState <- initFromFile(config, debug)
   routes <- getRoutesFromFile(appState)
-  app <- buildApp(routes, modules, appState)
+  app <- buildApp(routes, getConfigOrDefault(config, "modules", c()), appState)
 
   startTestServer(app, appState, host, port, daemonized)
 }
@@ -102,6 +103,7 @@ runTestServer <- function(daemonized = FALSE, debug = NULL) {
 #' Run a test server based on the given settings.
 #'
 #' @param app A rook app.
+#' @param appState State of the app.
 #' @param host The host to bind on.
 #' @param port The port to listen on.
 #' @param daemonized Whether to start the server daemonized.
@@ -114,22 +116,26 @@ startTestServer <- function(
   if (!"mattR_debug" %in% names(appState)) {
     appState[["mattR_debug"]] <- FALSE
   }
-  # Attaching makes a _copy_ of appState.
-  attach(appState, pos = 2, name = "mattR_appState")
-  on.exit(detach("mattR_appState"))
 
-  banner(host, port)
-  # Closing the handle twice using httpuv::stopDaemonizedServer will crash R.
-  # Therefore handle management is not entrusted to the user and done by mattR
-  # and the handle is never returned.
-  if (daemonized) {
-    .pkgenv[["handle"]] <- httpuv::startDaemonizedServer(host, port, app)
+  appState[["host"]] <- host
+  appState[["port"]] <- port
+  appState[["app"]] <- app
+  appState[["daemonized"]] <- daemonized
 
-  } else { # nocov start
-    message("Use Ctrl-C to stop\n")
-    httpuv::runServer(host, port, app) # nocov end
-    on.exit(runExitHandlers())
-  }
+  with(appState, {
+    banner(host, port, appState[["mattR_debug"]])
+    # Closing the handle twice using httpuv::stopDaemonizedServer will crash R.
+    # Therefore handle management is not entrusted to the user and done by mattR
+    # and the handle is never returned.
+    if (daemonized) {
+      .pkgenv[["handle"]] <- httpuv::startDaemonizedServer(host, port, app)
+
+    } else { # nocov start
+      message("Use Ctrl-C to stop\n")
+      httpuv::runServer(host, port, app) # nocov end
+      on.exit(runExitHandlers())
+    }
+  })
   invisible()
 }
 

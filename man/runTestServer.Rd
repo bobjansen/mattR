@@ -4,10 +4,12 @@
 \alias{runTestServer}
 \title{Run a server for testing mattR apps}
 \usage{
-runTestServer(daemonized = FALSE)
+runTestServer(daemonized = FALSE, debug = NULL)
 }
 \arguments{
 \item{daemonized}{Whether to start the server daemonized.}
+
+\item{debug}{Whether to run in debug mode.}
 }
 \value{
 The httpuv handle to the server process.

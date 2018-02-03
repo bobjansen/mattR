@@ -4,19 +4,19 @@
 \alias{startTestServer}
 \title{startTestServer}
 \usage{
-startTestServer(app, host = "0.0.0.0", port = 8080L, daemonized = FALSE,
-  debug = FALSE)
+startTestServer(app, appState = new.env(), host = "0.0.0.0", port = 8080L,
+  daemonized = FALSE)
 }
 \arguments{
 \item{app}{A rook app.}
+
+\item{appState}{State of the app.}
 
 \item{host}{The host to bind on.}
 
 \item{port}{The port to listen on.}
 
 \item{daemonized}{Whether to start the server daemonized.}
-
-\item{debug}{Whether debug is activated.}
 }
 \description{
 Run a test server based on the given settings.

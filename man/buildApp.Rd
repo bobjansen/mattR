@@ -12,8 +12,6 @@ buildApp(routes, modules = c(), appState = new.env())
 \item{modules}{List of optional modules.}
 
 \item{appState}{The initial state of the app.}
-
-\item{config}{List containing the configuration for this app.}
 }
 \value{
 The app object
