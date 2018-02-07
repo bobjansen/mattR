@@ -123,7 +123,7 @@ startTestServer <- function(
   appState[["daemonized"]] <- daemonized
 
   with(appState, {
-    banner(host, port, appState[["mattR_debug"]])
+    banner(host, port, mattR_debug)
     # Closing the handle twice using httpuv::stopDaemonizedServer will crash R.
     # Therefore handle management is not entrusted to the user and done by mattR
     # and the handle is never returned.

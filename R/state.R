@@ -1,7 +1,5 @@
 initFromFile <- function(config, debug = NULL) {
-  appState <- new.env()
-
-  appState[["config"]] <- config
+  appState <- list2env(config)
 
   initPath <- file.path(getwd(), "init.R")
   if (file.exists(initPath)) {
