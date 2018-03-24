@@ -1,5 +1,6 @@
 # Put your routes here.
 
-routes <- createRoutes(c("^*/", genericView(function(params) {
-  "Hello World!"
+routes <- list(c("^*/", genericView(function(resp, request, params) {
+  resp[["body"]] <- "Hello World!"
+  resp
 })))
