@@ -1,14 +1,21 @@
 matchRequest <- function(request, pattern) {
-  regexpr(pattern, request$PATH_INFO) == 1
+  regMatch <- regexpr(pattern, request[["PATH_INFO"]], perl = TRUE)
+  if (regMatch == 1) {
+    regMatch
+  } else {
+    NULL
+  }
 }
 
 matchRoutes <- function(routes, resp, req) {
   for (route in routes) {
-    if (matchRequest(req, route[[1]])) {
+    regMatch <- matchRequest(req, route[[1]])
+    if (!is.null(regMatch)) {
+      req[["RegExpMatch"]] <- regMatch
       return(route[[2]](resp, req))
     }
   }
-  notFoundResponse("Unknown URL")
+  notFoundResponse("Page Not Found")
 }
 
 getRoutesFromFile <- function(appState) {

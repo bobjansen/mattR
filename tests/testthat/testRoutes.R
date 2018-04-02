@@ -2,11 +2,11 @@ context("Routes")
 
 test_that("Simple matching works", {
   request <- list(PATH_INFO = "/")
-  expect_true(matchRequest(request, "/"))
+  expect_true(matchRequest(request, "/") == 1L)
 
   request$PATH_INFO <- "/static"
-  expect_true(matchRequest(request, "/static"))
-  expect_false(matchRequest(request, "/index"))
+  expect_true(matchRequest(request, "/static") == 1L)
+  expect_null(matchRequest(request, "/index"))
 
 })
 
@@ -62,4 +62,28 @@ test_that("Returning a null object results in error", {
   )
 
   expect_error(matchRoutes(routes, list(PATH_INFO = "index.html")))
+})
+
+test_that("Params are extracted from a named url", {
+  routes <- list(
+    c("^blogs/(?<title>[A-z]+)/$", genericView(
+      function(resp, req, params) params[["title"]]))
+  )
+  expect_equal(matchRoutes(routes, NULL,
+                           list(PATH_INFO = "blogs/foo/",
+                                REQUEST_METHOD = "GET")),
+               "foo")
+  expect_equal(matchRoutes(routes, NULL,
+                           list(PATH_INFO = "blogs/FOO/",
+                                REQUEST_METHOD = "GET")),
+               "FOO")
+
+  routes <- list(
+    c("^blogs/(?<title>[A-z]+)/comment/(?<number>[0-9]+)/$", genericView(
+      function(resp, req, params)
+        paste(params[["title"]], params[["number"]]))))
+  expect_equal(matchRoutes(routes, NULL,
+                           list(PATH_INFO = "blogs/foo/comment/2/",
+                                REQUEST_METHOD = "GET")),
+               "foo 2")
 })
