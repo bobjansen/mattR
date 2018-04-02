@@ -4,11 +4,17 @@ print.banner.on.startup: auto
 vcs.ignore.lib: TRUE
 vcs.ignore.src: TRUE
 external.packages:
+    covr
     devtools
     roxygen2
+    testthat
 local.repos: 
 load.external.packages.on.startup: TRUE
 ignored.packages: 
+    covr
+    devtools
+    roxygen2
+    testthat
 quiet.package.installation: TRUE
 snapshot.recommended.packages: FALSE
 snapshot.fields:
