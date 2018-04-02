@@ -1,3 +1,5 @@
+context("Database")
+
 test_that("Connecting to the database works", {
   con <- createConnection()
   on.exit(DBI::dbDisconnect(con))

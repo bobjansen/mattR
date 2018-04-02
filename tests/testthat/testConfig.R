@@ -1,3 +1,5 @@
+context("Config")
+
 test_that("Configure returns a list", {
   config <- configure()
   on.exit(DBI::dbDisconnect(config[["dbConnection"]]))

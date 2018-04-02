@@ -1,3 +1,5 @@
+context("Cookie")
+
 test_that("Parsing a single valued cookie works", {
   parsedCookie <- parseCookie("foo=bar")
   expect_equal(parsedCookie, list(foo = "bar"))

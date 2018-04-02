@@ -1,3 +1,5 @@
+context("Views")
+
 test_that("response has a body", {
   resp <- response("foo", 200)
 

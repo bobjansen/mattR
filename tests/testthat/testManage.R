@@ -1,3 +1,5 @@
+context("Manage")
+
 test_that("Skeleton creates a skeleton", {
   # Prepare a directory for installation.
   installDir <- file.path(tempdir(), "skeleton")

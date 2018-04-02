@@ -1,3 +1,5 @@
+context("Routes")
+
 test_that("Simple matching works", {
   request <- list(PATH_INFO = "/")
   expect_true(matchRequest(request, "/"))

@@ -1,3 +1,5 @@
+context("Session")
+
 test_that("Creating a session works", {
   con <- setupDatabase()
   on.exit(DBI::dbDisconnect(con))

@@ -1,3 +1,5 @@
+context("Response")
+
 test_that("Setting up a response works", {
   req <- list()
   resp <- setupResponse(req)

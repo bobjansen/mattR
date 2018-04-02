@@ -1,3 +1,5 @@
+context("Server")
+
 test_that("Get works", {
   runTestServer(daemonized = TRUE)
   on.exit(stopDaemonizedServer())
