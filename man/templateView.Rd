@@ -13,7 +13,7 @@ templateView(templateFile, data)
 rendering}
 }
 \value{
-A response object with as body the rendered template
+A response object with as body the rendered template.
 }
 \description{
 Respond with a rendered template

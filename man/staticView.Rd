@@ -7,9 +7,9 @@
 staticView(staticDir, urlPath)
 }
 \arguments{
-\item{staticDir}{Location of the static files on the server}
+\item{staticDir}{Location of the static files on the server.}
 
-\item{urlPath}{URL path to the static files}
+\item{urlPath}{URL path to the static files.}
 }
 \value{
 A response object or NULL if the file is not found.

@@ -2,7 +2,7 @@
 #'
 #' @param filepath Filepath of which to guess the Content-Type.
 #'
-#' @return The guess of the Content-Type
+#' @return The guess of the Content-Type.
 guessContentTypeFromFilePath <- function(filepath) {
   if (endsWith(filepath, 'html') || endsWith(filepath, 'htm')) {
     'text/html'
@@ -15,8 +15,8 @@ guessContentTypeFromFilePath <- function(filepath) {
 
 #' Respond with a static file
 #'
-#' @param staticDir Location of the static files on the server
-#' @param urlPath URL path to the static files
+#' @param staticDir Location of the static files on the server.
+#' @param urlPath URL path to the static files.
 #'
 #' @return A response object or NULL if the file is not found.
 #' @export
@@ -59,7 +59,7 @@ staticView <- function(staticDir, urlPath) {
   }
 }
 
-#' Respond with the result of FUN.
+#' Respond with the result of FUN
 #'
 #' @param FUN Function that generates the response as text.
 #'
@@ -99,7 +99,7 @@ genericView <- function(FUN) {
 #' @param data named list or environment with variables that will be used during
 #' rendering
 #'
-#' @return A response object with as body the rendered template
+#' @return A response object with as body the rendered template.
 #' @export
 #'
 #' @examples
@@ -123,7 +123,7 @@ templateView <- function(templateFile, data) {
 
 #' Render a template given data
 #'
-#' @param templateFile Filepath of a whisker template
+#' @param templateFile Filepath of a whisker template.
 #' @param data Named list or environment with variables that will be used during
 #' rendering.
 #'
@@ -137,3 +137,4 @@ renderTemplate <- function(templateFile, data) {
   template <- readChar(templateFile, file.info(templateFile)$size)
   whisker::whisker.render(template, data)
 }
+

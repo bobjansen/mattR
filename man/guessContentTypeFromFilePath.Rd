@@ -10,7 +10,7 @@ guessContentTypeFromFilePath(filepath)
 \item{filepath}{Filepath of which to guess the Content-Type.}
 }
 \value{
-The guess of the Content-Type
+The guess of the Content-Type.
 }
 \description{
 Guess the Content-Type for a file or filepath

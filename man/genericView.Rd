@@ -2,7 +2,7 @@
 % Please edit documentation in R/views.R
 \name{genericView}
 \alias{genericView}
-\title{Respond with the result of FUN.}
+\title{Respond with the result of FUN}
 \usage{
 genericView(FUN)
 }
@@ -13,7 +13,7 @@ genericView(FUN)
 A response object.
 }
 \description{
-Respond with the result of FUN.
+Respond with the result of FUN
 }
 \examples{
 genericView(function() "Hello World!")

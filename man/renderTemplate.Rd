@@ -7,7 +7,7 @@
 renderTemplate(templateFile, data)
 }
 \arguments{
-\item{templateFile}{Filepath of a whisker template}
+\item{templateFile}{Filepath of a whisker template.}
 
 \item{data}{Named list or environment with variables that will be used during
 rendering.}
