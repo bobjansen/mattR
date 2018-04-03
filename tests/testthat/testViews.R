@@ -58,8 +58,8 @@ test_that("Static View returns NULL when the prefix is not used.", {
   request <- list(PATH_INFO = 'index.html')
   view <- staticView(system.file("static", package = "mattR"),
                      "static")
-  resp <- view(NULL, request)
 
+  expect_warning(resp <- view(NULL, request))
   expect_equal(resp, NULL)
 })
 

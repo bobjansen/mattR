@@ -8,6 +8,8 @@ guessContentTypeFromFilePath <- function(filepath) {
     'text/html'
   } else if (endsWith(filepath, 'css')) {
     'text/css'
+  } else if (endsWith(filepath, 'png')) {
+    'image/png'
   } else {
     ''
   }
@@ -31,6 +33,7 @@ staticView <- function(staticDir, urlPath) {
 
     # Ensure that urlPath is a prefix for the requested path.
     if (!startsWith(requestPath, urlPath)) {
+      warning(paste(requestPath, "doesn't match", urlPath))
       return()
     }
 
@@ -47,9 +50,11 @@ staticView <- function(staticDir, urlPath) {
     contentType <- guessContentTypeFromFilePath(staticResourceSubPath)
 
     if (file.exists(fileName)) {
-      resp[["body"]] <- paste0(resp[["body"]],
-                               readChar(fileName,
-                                        file.info(fileName)[["size"]]))
+      resp[["body"]] <- if (startsWith(contentType, 'text')) {
+        readChar(fileName, file.info(fileName)[["size"]])
+      } else {
+        readBin(fileName, 'raw', file.info(fileName)[["size"]])
+      }
       resp[["headers"]][["Content-Type"]] <- contentType
       resp[["status"]] <- 200L
       resp
