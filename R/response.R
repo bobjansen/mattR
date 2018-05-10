@@ -12,7 +12,7 @@ response <- function(body = NULL, statusCode = NULL, contentType = '') {
 #'
 #' Response for objects (URL's) that can't be found.
 #'
-#' @param An optional message to show to the user.
+#' @param message An optional message to show to the user.
 #'
 #' @export
 notFoundResponse <- function(message = "") {
@@ -36,7 +36,7 @@ notFoundResponse <- function(message = "") {
 #'
 #' Response for requests that generate an error.
 #'
-#' @param An optional message to show to the user.
+#' @param message An optional message to show to the user.
 #'
 #' @export
 errorResponse <- function(message = "") {

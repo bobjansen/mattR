@@ -7,7 +7,7 @@
 notFoundResponse(message = "")
 }
 \arguments{
-\item{An}{optional message to show to the user.}
+\item{message}{An optional message to show to the user.}
 }
 \description{
 Response for objects (URL's) that can't be found.
