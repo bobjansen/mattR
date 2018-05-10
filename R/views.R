@@ -112,8 +112,10 @@ templateView <- function(templateFile, data) {
 #' Render a template given data
 #'
 #' @param templateFile Filepath of a whisker template.
-#' @param data Named list or environment with variables that will be used during
-#' rendering.
+#' @param data Named list or environment with variables that will be used
+#' during rendering.
+#' @param partials Partial templates that can be included in the template,
+#' file extension must be \code{html}.
 #'
 #' @return The rendered template.
 #' @export
@@ -121,8 +123,24 @@ templateView <- function(templateFile, data) {
 #' @examples
 #' renderTemplate(system.file("static", "index.html", package = "mattR"),
 #'                list(title = "foo", text = "bar"))
-renderTemplate <- function(templateFile, data) {
+renderTemplate <- function(templateFile, data, partials = list()) {
   template <- readChar(templateFile, file.info(templateFile)$size)
-  whisker::whisker.render(template, data)
+  whisker::whisker.render(template, data, partials = partials)
+}
+
+#' Read partial templates for template rendering
+#'
+#' @param directory Directory of the partial templates
+#' @return A named list of partials.
+#' @export
+readPartials <- function(directory) {
+  partialTemplates <- list.files(directory,
+                                 full.names = TRUE,
+                                 pattern = '\\.html$')
+  names(partialTemplates) <-
+    tools::file_path_sans_ext(basename(partialTemplates))
+  sapply(partialTemplates, function(x) {
+    readChar(x, file.info(x)$size)
+  }, USE.NAMES = TRUE, simplify = FALSE)
 }
 

@@ -4,13 +4,16 @@
 \alias{renderTemplate}
 \title{Render a template given data}
 \usage{
-renderTemplate(templateFile, data)
+renderTemplate(templateFile, data, partials = list())
 }
 \arguments{
 \item{templateFile}{Filepath of a whisker template.}
 
-\item{data}{Named list or environment with variables that will be used during
-rendering.}
+\item{data}{Named list or environment with variables that will be used
+during rendering.}
+
+\item{partials}{Partial templates that can be included in the template,
+file extension must be \code{html}.}
 }
 \value{
 The rendered template.
