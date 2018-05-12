@@ -129,7 +129,6 @@ startTestServer <- function(
     # and the handle is never returned.
     if (daemonized) {
       .pkgenv[["handle"]] <- httpuv::startDaemonizedServer(host, port, app)
-
     } else { # nocov start
       message("Use Ctrl-C to stop\n")
       httpuv::runServer(host, port, app) # nocov end

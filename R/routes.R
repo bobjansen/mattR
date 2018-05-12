@@ -27,12 +27,13 @@ getRoutesFromFile <- function(appState) {
     if (file.exists(routesPath)) {
       source(routesPath, local = TRUE) # nocov
     } else {
-      source(system.file("defaults", "routes.R", package = "mattR"), local = TRUE)
+      source(system.file("defaults", "routes.R", package = "mattR"),
+             local = TRUE)
     }
 
     if (appState[["mattR_debug"]]) { # nocov start
       message(paste("Path of the user routes file would be:",
-                     routesPath)) # nocov end
+                    routesPath)) # nocov end
     }
 
     if (is.null(routes)) {
