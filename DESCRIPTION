@@ -8,7 +8,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: httpuv, whisker, shiny, DBI, RSQLite, scrypt, openssl, methods
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 NeedsCompilation: no
 Packaged: 2016-10-15 08:35:27 UTC; brj
 Author: Bob Jansen [aut, cre]

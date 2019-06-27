@@ -4,8 +4,8 @@
 \alias{startTestServer}
 \title{startTestServer}
 \usage{
-startTestServer(app, appState = new.env(), host = "0.0.0.0", port = 8080L,
-  daemonized = FALSE)
+startTestServer(app, appState = new.env(), host = "0.0.0.0",
+  port = 8080L, daemonized = FALSE)
 }
 \arguments{
 \item{app}{A rook app.}
